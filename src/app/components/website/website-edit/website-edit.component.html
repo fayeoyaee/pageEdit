@@ -1,15 +1,15 @@
 <div class="container-fluid">
   <div class="navbar navbar-fixed-top bg-primary">
-    <a href="website-list.html" class="navbar-brand myNavIconLeft text-white">
+    <a [routerLink]="['/user/:userId/website]" class="navbar-brand myNavIconLeft text-white">
       <span class="glyphicon glyphicon-menu-left"></span>
     </a>
     <div class="navbar-brand myNavIconCenter visibleIfLandscape text-white">Websites</div>
-    <a href="website-new.html" class="navbar-brand myNavIconCenter2 visibleIfLandscape text-white">
+    <a [routerLink]="['/user/:userId/website/new]" class="navbar-brand myNavIconCenter2 visibleIfLandscape text-white">
       <span class="glyphicon glyphicon-plus"></span>
     </a>
     <div class="navbar-brand myNavIconCenter3 visibleIfLandscape text-white">Edit Websites</div>
     <div class="navbar-brand myNavIconCenter visibleIfPortrait text-white">Edit Websites</div>
-    <a href="website-list.html" class="navbar-brand myNavIconRight text-white">
+    <a [routerLink]="['/user/:userId/website]" class="navbar-brand myNavIconRight text-white">
       <span class="glyphicon glyphicon-ok"></span>
     </a>
   </div>
@@ -46,7 +46,7 @@
         </div>
 
         <p>
-          <a href="website-list.html">
+          <a [routerLink]="['/user/:userId/website]">
             <button type="button" class="btn btn-block btn-danger">Delete</button>
           </a>
         </p>
@@ -54,7 +54,7 @@
     </div>
   </div>
   <div class="navbar navbar-fixed-bottom bg-primary text-white">
-    <a href="../user/profile.html" class="navbar-brand myNavIconRight">
+    <a [routerLink]="['/user/:userId]" class="navbar-brand myNavIconRight">
       <span class="glyphicon glyphicon-user"></span>
     </a>
   </div>
