@@ -44,7 +44,10 @@ import { Routing } from './app.routing';
     WidgetYoutubeComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule,
+    HttpModule,
+    Routing
   ],
   providers: [],
   bootstrap: [AppComponent]
