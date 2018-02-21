@@ -49,7 +49,6 @@ import { Routing } from './app.routing';
     HttpModule,
     Routing
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
