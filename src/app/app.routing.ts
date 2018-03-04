@@ -1,20 +1,20 @@
 import {Routes, RouterModule} from '@angular/router';
 import {ModuleWithProviders} from '@angular/core';
-import {LoginComponent} from './user/login/login.component';
-import {RegisterComponent} from './user/register/register.component';
-import {ProfileComponent} from './user/profile/profile.component';
-import {PageEditComponent} from './page/page-edit/page-edit.component';
-import {PageListComponent} from './page/page-list/page-list.component';
-import {PageNewComponent} from './page/page-new/page-new.component';
-import {WebsiteEditComponent} from './website/website-edit/website-edit.component';
-import {WebsiteListComponent} from './website/website-list/website-list.component';
-import {WebsiteNewComponent} from './website/website-new/website-new.component';
-import {WidgetChooserComponent} from './widget/widget-chooser/widget-chooser.component';
-import {WidgetListComponent} from './widget/widget-list/widget-list.component';
-import {WidgetHeaderComponent} from './widget/widget-edit/widget-header/widget-header.component';
-import {WidgetImageComponent} from './widget/widget-edit/widget-image/widget-image.component';
-import {WidgetYoutubeComponent} from './widget/widget-edit/widget-youtube/widget-youtube.component';
-import {WidgetEditComponent} from './widget/widget-edit/widget-edit.component';
+import {LoginComponent} from './components/user/login/login.component';
+import {RegisterComponent} from './components/user/register/register.component';
+import {ProfileComponent} from './components/user/profile/profile.component';
+import {PageEditComponent} from './components/page/page-edit/page-edit.component';
+import {PageListComponent} from './components/page/page-list/page-list.component';
+import {PageNewComponent} from './components/page/page-new/page-new.component';
+import {WebsiteEditComponent} from './components/website/website-edit/website-edit.component';
+import {WebsiteListComponent} from './components/website/website-list/website-list.component';
+import {WebsiteNewComponent} from './components/website/website-new/website-new.component';
+import {WidgetChooserComponent} from './components/widget/widget-chooser/widget-chooser.component';
+import {WidgetListComponent} from './components/widget/widget-list/widget-list.component';
+import {WidgetHeaderComponent} from './components/widget/widget-edit/widget-header/widget-header.component';
+import {WidgetImageComponent} from './components/widget/widget-edit/widget-image/widget-image.component';
+import {WidgetYoutubeComponent} from './components/widget/widget-edit/widget-youtube/widget-youtube.component';
+import {WidgetEditComponent} from './components/widget/widget-edit/widget-edit.component';
 // Import all other components here
 const APP_ROUTES: Routes = [
 { path : '', component : LoginComponent},
