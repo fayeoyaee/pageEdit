@@ -38,11 +38,11 @@
       <form>
         <div class="form-group">
           <label>Website Name</label>
-          <input type="text" class="form-control" placeholder="Blogger">
+          <input [(ngModel)]="websitename" name="websitename" id="websitename" type="text" class="form-control" placeholder={{websitename}}>
         </div>
         <div class="form-group">
           <label>Website Description</label>
-          <textarea class="form-control" rows="5" placeholder="Blogger is a blog-publishing service."></textarea>
+          <textarea [(ngModel)]="description" rows="5" name="description" id="description" type="text" class="form-control" placeholder={{description}}></textarea>
         </div>
 
         <p>
