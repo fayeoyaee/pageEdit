@@ -12,11 +12,11 @@
   <form>
     <div class="form-group">
       <label>Name</label>
-      <input type="text" class="form-control" placeholder="Page Name">
+      <input [(ngModel)]="pagename" name="pagename" id="pagename" type="text" class="form-control" placeholder={{pagename}}>
     </div>
     <div class="form-group">
-      <label>Page</label>
-      <input type="text" class="form-control" placeholder="Page Title">
+      <label>Description</label>
+      <textarea [(ngModel)]="description" rows="5" name="description" id="description" type="text" class="form-control" placeholder={{description}}></textarea>
     </div>
   </form>
   <p>
