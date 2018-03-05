@@ -11,13 +11,7 @@
     <!-- add ngModel directive and set name field at each HTML input field or control -->
     <!-- add validation to check user input by adding required attribute to input fields -->
     <!-- add dynamically added css classes like input.ngInvalid.ngTouched to highlight invalid input fields -->
-    <input placeholder="username" 
-           name="username" 
-           type="text" 
-           class="form-control" 
-           ngModel 
-           required 
-           #username="ngModel" />
+    <input placeholder="username" name="username" type="text" class="form-control" ngModel required #username="ngModel" />
     <!-- use local reference to the input field to display a errMsg -->
     <span class="help-block" *ngIf="!username.valid && username.touched">
       Please enter username!
@@ -28,7 +22,10 @@
     </span>
   </form>
   <!-- disable the submit button if the form is not valid by using disable property binding and local form reference -->
-  <button type="submit" class="btn btn-block btn-primary" [disabled]="!f.valid">Login</button>
+  <!-- TODO: use constant value alice temporarily, should dispatch router from login controller -->
+  <a [routerLink]="['/user/123']">
+    <button type="submit" class="btn btn-block btn-primary" [disabled]="!f.valid">Login</button>
+  </a>
   <p>
     <a [routerLink]="['/register']">
       <button type="button" class="btn btn-block btn-success">Register</button>

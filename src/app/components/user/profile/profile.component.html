@@ -8,7 +8,8 @@
   <form>
     <div class="form-group">
       <label>Username</label>
-      <input type="text" class="form-control" placeholder="x">
+      <!-- use two-way data binding to bind user details with the form elements -->
+      <input [(ngModel)]="username" name="username" id="username" type="text" class="form-control" placeholder={{username}}>
     </div>
     <div class="form-group">
       <label>Email</label>
@@ -16,11 +17,11 @@
     </div>
     <div class="form-group">
       <label>First Name</label>
-      <input type="text" class="form-control" placeholder="x">
+      <input [(ngModel)]="firstName" name="firstName" id="firstName" type="text" class="form-control" placeholder={{firstName}}>
     </div>
     <div class="form-group">
       <label>Last Name</label>
-      <input type="text" class="form-control" placeholder="x">
+      <input [(ngModel)]="lastName" name="lastName" id="lastName" type="text" class="form-control" placeholder={{lastName}}>
     </div>
     <p>
       <a [routerLink]="['/user/01/website']">
