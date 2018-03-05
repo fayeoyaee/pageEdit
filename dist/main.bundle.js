@@ -262,7 +262,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/page/page-edit/page-edit.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\n  <div class=\"navbar navbar-fixed-top bg-grey\">\n    <a [routerLink]=\"['/user/01/website/02/page']\" class=\"navbar-brand myNavIconLeft text-black\">\n      <span class=\"glyphicon glyphicon-menu-left\"></span>\n    </a>\n    <div class=\"navbar-brand myNavIconCenter text-black\">Edit Page</div>\n    <a [routerLink]=\"['/user/01/website/02/page']\" class=\"navbar-brand myNavIconRight text-black\">\n      <span class=\"glyphicon glyphicon-ok\"></span>\n    </a>\n  </div>\n\n  <form>\n    <div class=\"form-group\">\n      <label>Name</label>\n      <input type=\"text\" class=\"form-control\" placeholder=\"Page Name\">\n    </div>\n    <div class=\"form-group\">\n      <label>Page</label>\n      <input type=\"text\" class=\"form-control\" placeholder=\"Page Title\">\n    </div>\n  </form>\n  <p>\n    <a [routerLink]=\"['/user/01/website/02/page']\">\n      <button type=\"button\" class=\"btn btn-block btn-danger\">Delete</button>\n    </a>\n  </p>\n  <div class=\"navbar navbar-fixed-bottom bg-grey text-black\">\n    <a [routerLink]=\"['/user/01']\" class=\"navbar-brand myNavIconRight\">\n      <span class=\"glyphicon glyphicon-user\"></span>\n    </a>\n  </div>\n</div>"
+module.exports = "<div class=\"container-fluid\">\n  <div class=\"navbar navbar-fixed-top bg-grey\">\n    <a [routerLink]=\"['/user/01/website/02/page']\" class=\"navbar-brand myNavIconLeft text-black\">\n      <span class=\"glyphicon glyphicon-menu-left\"></span>\n    </a>\n    <div class=\"navbar-brand myNavIconCenter text-black\">Edit Page</div>\n    <a [routerLink]=\"['/user/01/website/02/page']\" class=\"navbar-brand myNavIconRight text-black\">\n      <span class=\"glyphicon glyphicon-ok\"></span>\n    </a>\n  </div>\n\n  <form>\n    <div class=\"form-group\">\n      <label>Name</label>\n      <input [(ngModel)]=\"pagename\" name=\"pagename\" id=\"pagename\" type=\"text\" class=\"form-control\" placeholder={{pagename}}>\n    </div>\n    <div class=\"form-group\">\n      <label>Description</label>\n      <textarea [(ngModel)]=\"description\" rows=\"5\" name=\"description\" id=\"description\" type=\"text\" class=\"form-control\" placeholder={{description}}></textarea>\n    </div>\n  </form>\n  <p>\n    <a [routerLink]=\"['/user/01/website/02/page']\">\n      <button type=\"button\" class=\"btn btn-block btn-danger\">Delete</button>\n    </a>\n  </p>\n  <div class=\"navbar navbar-fixed-bottom bg-grey text-black\">\n    <a [routerLink]=\"['/user/01']\" class=\"navbar-brand myNavIconRight\">\n      <span class=\"glyphicon glyphicon-user\"></span>\n    </a>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -272,6 +272,8 @@ module.exports = "<div class=\"container-fluid\">\n  <div class=\"navbar navbar-
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PageEditComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_page_service_client__ = __webpack_require__("../../../../../src/app/services/page.service.client.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -282,10 +284,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
 var PageEditComponent = /** @class */ (function () {
-    function PageEditComponent() {
+    function PageEditComponent(pageService, activateRoute) {
+        this.pageService = pageService;
+        this.activateRoute = activateRoute;
+        this.page = {};
     }
     PageEditComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        // retrieves userId as path parameter
+        this.activateRoute.params.subscribe(function (params) {
+            _this.pageId = params['pageId'];
+        });
+        // user UserService to retrieve the user instance
+        this.page = this.pageService.findPageById(this.pageId);
+        this.pagename = this.page['name'];
+        this.description = this.page['description'];
     };
     PageEditComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
@@ -293,7 +309,7 @@ var PageEditComponent = /** @class */ (function () {
             template: __webpack_require__("../../../../../src/app/components/page/page-edit/page-edit.component.html"),
             styles: [__webpack_require__("../../../../../src/app/components/page/page-edit/page-edit.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_page_service_client__["a" /* PageService */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* ActivatedRoute */]])
     ], PageEditComponent);
     return PageEditComponent;
 }());
@@ -656,7 +672,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/website/website-edit/website-edit.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\n  <div class=\"navbar navbar-fixed-top bg-primary\">\n    <a [routerLink]=\"['/user/01/website']\" class=\"navbar-brand myNavIconLeft text-white\">\n      <span class=\"glyphicon glyphicon-menu-left\"></span>\n    </a>\n    <div class=\"navbar-brand myNavIconCenter visibleIfLandscape text-white\">Websites</div>\n    <a [routerLink]=\"['/user/01/website/new']\" class=\"navbar-brand myNavIconCenter2 visibleIfLandscape text-white\">\n      <span class=\"glyphicon glyphicon-plus\"></span>\n    </a>\n    <div class=\"navbar-brand myNavIconCenter3 visibleIfLandscape text-white\">Edit Websites</div>\n    <div class=\"navbar-brand myNavIconCenter visibleIfPortrait text-white\">Edit Websites</div>\n    <a [routerLink]=\"['/user/01/website']\" class=\"navbar-brand myNavIconRight text-white\">\n      <span class=\"glyphicon glyphicon-ok\"></span>\n    </a>\n  </div>\n  <div class=\"grid-container\">\n    <div class=\"visibleIfLandscape side\">\n      <ul class=\"list-group bg-white text-primary\">\n        <li class=\"list-group-item\">\n          <a>Address Bock App</a>\n          <span class=\"glyphicon glyphicon-asterisk pull-right\"></span>\n        </li>\n        <li class=\"list-group-item\">\n          <a>Blogger</a>\n          <span class=\"glyphicon glyphicon-asterisk pull-right\"></span>\n        </li>\n        <li class=\"list-group-item\">\n          <a>Blogging App</a>\n          <span class=\"glyphicon glyphicon-asterisk pull-right\"></span>\n        </li>\n        <li class=\"list-group-item\">\n          <a>Script Testing App</a>\n          <span class=\"glyphicon glyphicon-asterisk pull-right\"></span>\n        </li>\n      </ul>\n    </div>\n    <div class=\"main\">\n      <form>\n        <div class=\"form-group\">\n          <label>Website Name</label>\n          <input type=\"text\" class=\"form-control\" placeholder=\"Blogger\">\n        </div>\n        <div class=\"form-group\">\n          <label>Website Description</label>\n          <textarea class=\"form-control\" rows=\"5\" placeholder=\"Blogger is a blog-publishing service.\"></textarea>\n        </div>\n\n        <p>\n          <a [routerLink]=\"['/user/01/website']\">\n            <button type=\"button\" class=\"btn btn-block btn-danger\">Delete</button>\n          </a>\n        </p>\n      </form>\n    </div>\n  </div>\n  <div class=\"navbar navbar-fixed-bottom bg-primary text-white\">\n    <a [routerLink]=\"['/user/01']\" class=\"navbar-brand myNavIconRight\">\n      <span class=\"glyphicon glyphicon-user\"></span>\n    </a>\n  </div>\n</div>"
+module.exports = "<div class=\"container-fluid\">\n  <div class=\"navbar navbar-fixed-top bg-primary\">\n    <a [routerLink]=\"['/user/01/website']\" class=\"navbar-brand myNavIconLeft text-white\">\n      <span class=\"glyphicon glyphicon-menu-left\"></span>\n    </a>\n    <div class=\"navbar-brand myNavIconCenter visibleIfLandscape text-white\">Websites</div>\n    <a [routerLink]=\"['/user/01/website/new']\" class=\"navbar-brand myNavIconCenter2 visibleIfLandscape text-white\">\n      <span class=\"glyphicon glyphicon-plus\"></span>\n    </a>\n    <div class=\"navbar-brand myNavIconCenter3 visibleIfLandscape text-white\">Edit Websites</div>\n    <div class=\"navbar-brand myNavIconCenter visibleIfPortrait text-white\">Edit Websites</div>\n    <a [routerLink]=\"['/user/01/website']\" class=\"navbar-brand myNavIconRight text-white\">\n      <span class=\"glyphicon glyphicon-ok\"></span>\n    </a>\n  </div>\n  <div class=\"grid-container\">\n    <div class=\"visibleIfLandscape side\">\n      <ul class=\"list-group bg-white text-primary\">\n        <li class=\"list-group-item\">\n          <a>Address Bock App</a>\n          <span class=\"glyphicon glyphicon-asterisk pull-right\"></span>\n        </li>\n        <li class=\"list-group-item\">\n          <a>Blogger</a>\n          <span class=\"glyphicon glyphicon-asterisk pull-right\"></span>\n        </li>\n        <li class=\"list-group-item\">\n          <a>Blogging App</a>\n          <span class=\"glyphicon glyphicon-asterisk pull-right\"></span>\n        </li>\n        <li class=\"list-group-item\">\n          <a>Script Testing App</a>\n          <span class=\"glyphicon glyphicon-asterisk pull-right\"></span>\n        </li>\n      </ul>\n    </div>\n    <div class=\"main\">\n      <form>\n        <div class=\"form-group\">\n          <label>Website Name</label>\n          <input [(ngModel)]=\"websitename\" name=\"websitename\" id=\"websitename\" type=\"text\" class=\"form-control\" placeholder={{websitename}}>\n        </div>\n        <div class=\"form-group\">\n          <label>Website Description</label>\n          <textarea [(ngModel)]=\"description\" rows=\"5\" name=\"description\" id=\"description\" type=\"text\" class=\"form-control\" placeholder={{description}}></textarea>\n        </div>\n\n        <p>\n          <a [routerLink]=\"['/user/01/website']\">\n            <button type=\"button\" class=\"btn btn-block btn-danger\">Delete</button>\n          </a>\n        </p>\n      </form>\n    </div>\n  </div>\n  <div class=\"navbar navbar-fixed-bottom bg-primary text-white\">\n    <a [routerLink]=\"['/user/01']\" class=\"navbar-brand myNavIconRight\">\n      <span class=\"glyphicon glyphicon-user\"></span>\n    </a>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -666,6 +682,8 @@ module.exports = "<div class=\"container-fluid\">\n  <div class=\"navbar navbar-
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return WebsiteEditComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_website_service_client__ = __webpack_require__("../../../../../src/app/services/website.service.client.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -676,10 +694,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
 var WebsiteEditComponent = /** @class */ (function () {
-    function WebsiteEditComponent() {
+    function WebsiteEditComponent(websiteService, activateRoute) {
+        this.websiteService = websiteService;
+        this.activateRoute = activateRoute;
+        this.website = {};
     }
     WebsiteEditComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        // retrieves userId as path parameter
+        this.activateRoute.params.subscribe(function (params) {
+            _this.websiteId = params['websiteId'];
+        });
+        // user UserService to retrieve the user instance
+        this.website = this.websiteService.findWebsiteById(this.websiteId);
+        this.websitename = this.website['name'];
+        this.description = this.website['description'];
     };
     WebsiteEditComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
@@ -687,7 +719,7 @@ var WebsiteEditComponent = /** @class */ (function () {
             template: __webpack_require__("../../../../../src/app/components/website/website-edit/website-edit.component.html"),
             styles: [__webpack_require__("../../../../../src/app/components/website/website-edit/website-edit.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_website_service_client__["a" /* WebsiteService */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* ActivatedRoute */]])
     ], WebsiteEditComponent);
     return WebsiteEditComponent;
 }());
@@ -961,7 +993,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/widget/widget-edit/widget-header/widget-header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\n  <div class=\"navbar navbar-fixed-top bg-grey\">\n    <a [routerLink]=\"['/user/01/website/02/page/03/widget']\" class=\"navbar-brand myNavIconLeft text-black\">\n      <span class=\"glyphicon glyphicon-menu-left\"></span>\n    </a>\n    <div class=\"navbar-brand myNavIconCenter text-black\">Widget Edit</div>\n    <a [routerLink]=\"['/user/01/website/02/page/03/widget']\" class=\"navbar-brand myNavIconRight text-black\">\n      <span class=\"glyphicon glyphicon-ok\"></span>\n    </a>\n  </div>\n\n\n  <form>\n    <div class=\"form-group\">\n      <label>Name</label>\n      <input type=\"text\" class=\"form-control\" placeholder=\"\">\n    </div>\n    <div class=\"form-group\">\n      <label>Text</label>\n      <input type=\"text\" class=\"form-control\" placeholder=\"US senate\">\n    </div>\n    <div class=\"form-group\">\n      <label>Size</label>\n      <input type=\"number\" class=\"form-control\" placeholder=\"3\">\n    </div>\n  </form>\n  <p>\n    <a [routerLink]=\"['/user/01/website/02/page/03/widget']\" >\n      <button type=\"button\" class=\"btn btn-block btn-danger\">Delete</button>\n    </a>\n  </p>\n  <div class=\"navbar navbar-fixed-bottom bg-grey text-black\">\n    <a [routerLink]=\"['/user/01']\" class=\"navbar-brand myNavIconRight\">\n      <span class=\"glyphicon glyphicon-user\"></span>\n    </a>\n  </div>\n</div>"
+module.exports = "<div class=\"container-fluid\">\n  <div class=\"navbar navbar-fixed-top bg-grey\">\n    <a [routerLink]=\"['/user/01/website/02/page/03/widget']\" class=\"navbar-brand myNavIconLeft text-black\">\n      <span class=\"glyphicon glyphicon-menu-left\"></span>\n    </a>\n    <div class=\"navbar-brand myNavIconCenter text-black\">Widget Edit</div>\n    <a [routerLink]=\"['/user/01/website/02/page/03/widget']\" class=\"navbar-brand myNavIconRight text-black\">\n      <span class=\"glyphicon glyphicon-ok\"></span>\n    </a>\n  </div>\n\n\n  <form>\n    <div class=\"form-group\">\n      <label>Name</label>\n      <input [(ngModel)]=\"widgetname\" name=\"widgetname\" id=\"widgetname\" type=\"text\" class=\"form-control\" placeholder={{widgetname}}>\n    </div>\n    <div class=\"form-group\">\n      <label>Text</label>\n      <input [(ngModel)]=\"widgettext\" name=\"widgettext\" id=\"widgettext\" type=\"text\" class=\"form-control\" placeholder={{widgettext}}>\n    </div>\n    <div class=\"form-group\">\n      <label>Size</label>\n      <input [(ngModel)]=\"widgetsize\" name=\"widgetsize\" id=\"widgetsize\" type=\"number\" class=\"form-control\" placeholder={{widgetsize}}>\n    </div>\n  </form>\n  <p>\n    <a [routerLink]=\"['/user/01/website/02/page/03/widget']\">\n      <button type=\"button\" class=\"btn btn-block btn-danger\">Delete</button>\n    </a>\n  </p>\n  <div class=\"navbar navbar-fixed-bottom bg-grey text-black\">\n    <a [routerLink]=\"['/user/01']\" class=\"navbar-brand myNavIconRight\">\n      <span class=\"glyphicon glyphicon-user\"></span>\n    </a>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -971,6 +1003,8 @@ module.exports = "<div class=\"container-fluid\">\n  <div class=\"navbar navbar-
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return WidgetHeaderComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_widget_service_client__ = __webpack_require__("../../../../../src/app/services/widget.service.client.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -981,10 +1015,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
 var WidgetHeaderComponent = /** @class */ (function () {
-    function WidgetHeaderComponent() {
+    function WidgetHeaderComponent(widgetService, activateRoute) {
+        this.widgetService = widgetService;
+        this.activateRoute = activateRoute;
+        this.widget = {};
     }
     WidgetHeaderComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        // retrieves userId as path parameter
+        this.activateRoute.params.subscribe(function (params) {
+            _this.widgetId = params['widgetId'];
+        });
+        // user UserService to retrieve the user instance
+        this.widget = this.widgetService.findWidgetById(this.widgetId);
+        this.widgetname = this.widget['name'];
+        this.widgettext = this.widget['text'];
+        this.widgetsize = this.widget['size'];
     };
     WidgetHeaderComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
@@ -992,7 +1041,7 @@ var WidgetHeaderComponent = /** @class */ (function () {
             template: __webpack_require__("../../../../../src/app/components/widget/widget-edit/widget-header/widget-header.component.html"),
             styles: [__webpack_require__("../../../../../src/app/components/widget/widget-edit/widget-header/widget-header.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_widget_service_client__["a" /* WidgetService */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* ActivatedRoute */]])
     ], WidgetHeaderComponent);
     return WidgetHeaderComponent;
 }());
