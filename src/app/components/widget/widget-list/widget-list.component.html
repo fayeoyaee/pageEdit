@@ -10,56 +10,69 @@
   </div>
 
 
-  <div class="col-xs-12">
-    <li class="row list-group-item thmnail">
-      <div class="icon-header">
-        <h1 class="myHeader">Github</h1>
-      </div>
-      <div class="icon-group">
-        <a [routerLink]="['/user/123/website/456/page/321/widget/123/header']" class="">
-          <span class="glyphicon glyphicon-cog text-primary"></span>
-        </a>
-        <span class="glyphicon glyphicon-menu-hamburger"></span>
-      </div>
-    </li>
+  <div class="col-xs-12" *ngFor="let widget of widgets">
 
-    <div class="embed-responsive embed-responsive-16by9 thumnail row">
-      <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/XPrxhmuzUyo" allowfullscreen></iframe>
-      <div class="icon-group">
-        <a [routerLink]="['/user/123/website/456/page/321/widget/678/youtube']" class="">
-          <span class="glyphicon glyphicon-cog text-primary"></span>
-        </a>
-        <span class="glyphicon glyphicon-menu-hamburger "></span>
+    <div [ngSwitch]="widget.widgetType">
+      <div *ngSwitchCase="'HEADING'">
+        <li class="row list-group-item thmnail">
+          <div class="icon-header">
+            <!-- control heading size using ngstyle -->
+            <h1 [ngStyle]="{'font-size': widget.size}">{{widget.text}}</h1>
+          </div>
+          <div class="icon-group">
+            <a [routerLink]="['/user',userId,'website',websiteId, 'page',pageId, 'widget',widget._id,'header']">
+              <span class="glyphicon glyphicon-cog text-primary"></span>
+            </a>
+            <span class="glyphicon glyphicon-menu-hamburger"></span>
+          </div>
+        </li>
       </div>
 
+      <div *ngSwitchCase="'IMAGE'">
+        <div class="row  list-group-item tthumnail">
+          <!-- TODO: image loading too slow -->
+          <img [ngStyle]="{'width': widget.width}" class="img-responsive" [attr.src]="widget.url" alt="image" />
+          <div class="icon-group">
+            <a [routerLink]="['/user',userId,'website',websiteId,'page',pageId,'widget',widget._id,'image']">
+              <span class="glyphicon glyphicon-cog text-primary"></span>
+            </a>
+            <span class="glyphicon glyphicon-menu-hamburger"></span>
+          </div>
+        </div>
+      </div>
+
+
+      <div *ngSwitchCase="'YOUTUBE'">
+        <div class="embed-responsive embed-responsive-16by9 thumnail row">
+          <!-- TODO: message port closed before response received -->
+          <!-- <iframe class="embed-responsive-item" [attr.src]="widget.url" allowfullscreen></iframe> -->
+          <!-- <iframe [ngStyle]="{'width': widget.width}" height="300" [attr.src]="widget.url" frameborder="0" allowfullscreen controls></iframe> -->
+          <video controls preload=auto [attr.src]="widget.url"></video>
+          <div class="icon-group">
+            <a [routerLink]="['/user',userId,'website',websiteId,'page',pageId,'widget',widget._id,'youtube']">
+              <span class="glyphicon glyphicon-cog text-primary"></span>
+            </a>
+            <span class="glyphicon glyphicon-menu-hamburger "></span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngSwitchCase="'HTML'">
+        <li class="list-group-item thmnail row">
+          <div>
+            <!-- TODO: use angular sanitize module to render html strings -->
+            {{widget.text}}
+          </div>
+          <div class="icon-group">
+            <span class="glyphicon glyphicon-cog text-primary"></span>
+            <span class="glyphicon glyphicon-menu-hamburger "></span>
+          </div>
+        </li>
+      </div>
     </div>
-
-    <li class="list-group-item thmnail row">
-      <div>
-        <a href="http://github.com">Github</a> is a web-based hosting service for version control using git. It is mostly used for computer code. It
-        offers all of the distributed version control and source code management functionality of Git as well as adding its
-        own features
-
-      </div>
-      <div class="icon-group">
-        <span class="glyphicon glyphicon-cog text-primary"></span>
-        <span class="glyphicon glyphicon-menu-hamburger "></span>
-      </div>
-
-    </li>
-
-    <div class="row  list-group-item tthumnail">
-      <img class="img-responsive" src="https://assets-cdn.github.com/images/modules/open_graph/github-mark.png" alt="github" />
-      <div class="icon-group">
-        <a [routerLink]="['/user/123/website/456/page/321/widget/345/image']" class="">
-          <span class="glyphicon glyphicon-cog text-primary"></span>
-        </a>
-        <span class="glyphicon glyphicon-menu-hamburger"></span>
-      </div>
-    </div>
-
 
   </div>
+  <!-- TODO: return to userId -->
   <div class="navbar navbar-fixed-bottom bg-grey">
     <a href="" class="navbar-brand myNavIconLeft text-black">
       <span class="glyphicon glyphicon-play"></span>

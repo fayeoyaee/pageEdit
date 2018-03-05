@@ -3,8 +3,6 @@ import { NgModule,  CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-
-
 // My components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/user/login/login.component';

@@ -1,0 +1,72 @@
+<div class="container-fluid">
+  <div class="navbar navbar-fixed-top bg-grey">
+    <a [routerLink]="['/user/123/website/456/page']" class="navbar-brand myNavIconLeft text-black">
+      <span class="glyphicon glyphicon-menu-left"></span>
+    </a>
+    <div class="navbar-brand myNavIconCenter text-black">Widget List</div>
+    <a [routerLink]="['/user/123/website/456/page/321/widget/new']" class="navbar-brand myNavIconRight text-black">
+      <span class="glyphicon glyphicon-ok"></span>
+    </a>
+  </div>
+
+
+  <div class="col-xs-12">
+    <li class="row list-group-item thmnail">
+      <div class="icon-header">
+        <h1 class="myHeader">Github</h1>
+      </div>
+      <div class="icon-group">
+        <a [routerLink]="['/user/123/website/456/page/321/widget/123/header']" class="">
+          <span class="glyphicon glyphicon-cog text-primary"></span>
+        </a>
+        <span class="glyphicon glyphicon-menu-hamburger"></span>
+      </div>
+    </li>
+
+    <div class="embed-responsive embed-responsive-16by9 thumnail row">
+      <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/XPrxhmuzUyo" allowfullscreen></iframe>
+      <div class="icon-group">
+        <a [routerLink]="['/user/123/website/456/page/321/widget/678/youtube']" class="">
+          <span class="glyphicon glyphicon-cog text-primary"></span>
+        </a>
+        <span class="glyphicon glyphicon-menu-hamburger "></span>
+      </div>
+    </div>
+
+    <li class="list-group-item thmnail row">
+      <div>
+        <a href="http://github.com">Github</a> is a web-based hosting service for version control using git. It is mostly used for computer code. It
+        offers all of the distributed version control and source code management functionality of Git as well as adding its
+        own features
+
+      </div>
+      <div class="icon-group">
+        <span class="glyphicon glyphicon-cog text-primary"></span>
+        <span class="glyphicon glyphicon-menu-hamburger "></span>
+      </div>
+
+    </li>
+
+    <div class="row  list-group-item tthumnail">
+      <img class="img-responsive" src="https://assets-cdn.github.com/images/modules/open_graph/github-mark.png" alt="github" />
+      <div class="icon-group">
+        <a [routerLink]="['/user/123/website/456/page/321/widget/345/image']" class="">
+          <span class="glyphicon glyphicon-cog text-primary"></span>
+        </a>
+        <span class="glyphicon glyphicon-menu-hamburger"></span>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="navbar navbar-fixed-bottom bg-grey">
+    <a href="" class="navbar-brand myNavIconLeft text-black">
+      <span class="glyphicon glyphicon-play"></span>
+    </a>
+    <a href="" class="navbar-brand myNavIconCenter text-black">
+      <span class="glyphicon glyphicon-eye-open"></span>
+    </a>
+    <a [routerLink]="['/user/123']" class="navbar-brand myNavIconRight">
+      <span class="glyphicon glyphicon-user"></span>
+    </a>
+  </div>

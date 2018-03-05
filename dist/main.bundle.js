@@ -1257,7 +1257,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/widget/widget-list/widget-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\n  <div class=\"navbar navbar-fixed-top bg-grey\">\n    <a [routerLink]=\"['/user/123/website/456/page']\" class=\"navbar-brand myNavIconLeft text-black\">\n      <span class=\"glyphicon glyphicon-menu-left\"></span>\n    </a>\n    <div class=\"navbar-brand myNavIconCenter text-black\">Widget List</div>\n    <a [routerLink]=\"['/user/123/website/456/page/321/widget/new']\" class=\"navbar-brand myNavIconRight text-black\">\n      <span class=\"glyphicon glyphicon-ok\"></span>\n    </a>\n  </div>\n\n\n  <div class=\"col-xs-12\">\n    <li class=\"row list-group-item thmnail\">\n      <div class=\"icon-header\">\n        <h1 class=\"myHeader\">Github</h1>\n      </div>\n      <div class=\"icon-group\">\n        <a [routerLink]=\"['/user/123/website/456/page/321/widget/123/header']\" class=\"\">\n          <span class=\"glyphicon glyphicon-cog text-primary\"></span>\n        </a>\n        <span class=\"glyphicon glyphicon-menu-hamburger\"></span>\n      </div>\n    </li>\n\n    <div class=\"embed-responsive embed-responsive-16by9 thumnail row\">\n      <iframe class=\"embed-responsive-item\" src=\"https://www.youtube.com/embed/XPrxhmuzUyo\" allowfullscreen></iframe>\n      <div class=\"icon-group\">\n        <a [routerLink]=\"['/user/123/website/456/page/321/widget/678/youtube']\" class=\"\">\n          <span class=\"glyphicon glyphicon-cog text-primary\"></span>\n        </a>\n        <span class=\"glyphicon glyphicon-menu-hamburger \"></span>\n      </div>\n\n    </div>\n\n    <li class=\"list-group-item thmnail row\">\n      <div>\n        <a href=\"http://github.com\">Github</a> is a web-based hosting service for version control using git. It is mostly used for computer code. It\n        offers all of the distributed version control and source code management functionality of Git as well as adding its\n        own features\n\n      </div>\n      <div class=\"icon-group\">\n        <span class=\"glyphicon glyphicon-cog text-primary\"></span>\n        <span class=\"glyphicon glyphicon-menu-hamburger \"></span>\n      </div>\n\n    </li>\n\n    <div class=\"row  list-group-item tthumnail\">\n      <img class=\"img-responsive\" src=\"https://assets-cdn.github.com/images/modules/open_graph/github-mark.png\" alt=\"github\" />\n      <div class=\"icon-group\">\n        <a [routerLink]=\"['/user/123/website/456/page/321/widget/345/image']\" class=\"\">\n          <span class=\"glyphicon glyphicon-cog text-primary\"></span>\n        </a>\n        <span class=\"glyphicon glyphicon-menu-hamburger\"></span>\n      </div>\n    </div>\n\n\n  </div>\n  <div class=\"navbar navbar-fixed-bottom bg-grey\">\n    <a href=\"\" class=\"navbar-brand myNavIconLeft text-black\">\n      <span class=\"glyphicon glyphicon-play\"></span>\n    </a>\n    <a href=\"\" class=\"navbar-brand myNavIconCenter text-black\">\n      <span class=\"glyphicon glyphicon-eye-open\"></span>\n    </a>\n    <a [routerLink]=\"['/user/123']\" class=\"navbar-brand myNavIconRight\">\n      <span class=\"glyphicon glyphicon-user\"></span>\n    </a>\n  </div>"
+module.exports = "<div class=\"container-fluid\">\n  <div class=\"navbar navbar-fixed-top bg-grey\">\n    <a [routerLink]=\"['/user/123/website/456/page']\" class=\"navbar-brand myNavIconLeft text-black\">\n      <span class=\"glyphicon glyphicon-menu-left\"></span>\n    </a>\n    <div class=\"navbar-brand myNavIconCenter text-black\">Widget List</div>\n    <a [routerLink]=\"['/user/123/website/456/page/321/widget/new']\" class=\"navbar-brand myNavIconRight text-black\">\n      <span class=\"glyphicon glyphicon-ok\"></span>\n    </a>\n  </div>\n\n\n  <div class=\"col-xs-12\" *ngFor=\"let widget of widgets\">\n\n    <div [ngSwitch]=\"widget.widgetType\">\n      <div *ngSwitchCase=\"'HEADING'\">\n        <li class=\"row list-group-item thmnail\">\n          <div class=\"icon-header\">\n            <!-- control heading size using ngstyle -->\n            <h1 [ngStyle]=\"{'font-size': widget.size}\">{{widget.text}}</h1>\n          </div>\n          <div class=\"icon-group\">\n            <a [routerLink]=\"['/user',userId,'website',websiteId, 'page',pageId, 'widget',widget._id,'header']\">\n              <span class=\"glyphicon glyphicon-cog text-primary\"></span>\n            </a>\n            <span class=\"glyphicon glyphicon-menu-hamburger\"></span>\n          </div>\n        </li>\n      </div>\n\n      <div *ngSwitchCase=\"'IMAGE'\">\n        <div class=\"row  list-group-item tthumnail\">\n          <!-- TODO: image loading too slow -->\n          <img [ngStyle]=\"{'width': widget.width}\" class=\"img-responsive\" [attr.src]=\"widget.url\" alt=\"image\" />\n          <div class=\"icon-group\">\n            <a [routerLink]=\"['/user',userId,'website',websiteId,'page',pageId,'widget',widget._id,'image']\">\n              <span class=\"glyphicon glyphicon-cog text-primary\"></span>\n            </a>\n            <span class=\"glyphicon glyphicon-menu-hamburger\"></span>\n          </div>\n        </div>\n      </div>\n\n\n      <div *ngSwitchCase=\"'YOUTUBE'\">\n        <div class=\"embed-responsive embed-responsive-16by9 thumnail row\">\n          <!-- TODO: message port closed before response received -->\n          <!-- <iframe class=\"embed-responsive-item\" [attr.src]=\"widget.url\" allowfullscreen></iframe> -->\n          <!-- <iframe [ngStyle]=\"{'width': widget.width}\" height=\"300\" [attr.src]=\"widget.url\" frameborder=\"0\" allowfullscreen controls></iframe> -->\n          <video controls preload=auto [attr.src]=\"widget.url\"></video>\n          <div class=\"icon-group\">\n            <a [routerLink]=\"['/user',userId,'website',websiteId,'page',pageId,'widget',widget._id,'youtube']\">\n              <span class=\"glyphicon glyphicon-cog text-primary\"></span>\n            </a>\n            <span class=\"glyphicon glyphicon-menu-hamburger \"></span>\n          </div>\n        </div>\n      </div>\n\n      <div *ngSwitchCase=\"'HTML'\">\n        <li class=\"list-group-item thmnail row\">\n          <div>\n            <p [ng-bind-html]=\"widget.text\"></p>\n          </div>\n          <div class=\"icon-group\">\n            <span class=\"glyphicon glyphicon-cog text-primary\"></span>\n            <span class=\"glyphicon glyphicon-menu-hamburger \"></span>\n          </div>\n        </li>\n      </div>\n    </div>\n\n  </div>\n  <div class=\"navbar navbar-fixed-bottom bg-grey\">\n    <a href=\"\" class=\"navbar-brand myNavIconLeft text-black\">\n      <span class=\"glyphicon glyphicon-play\"></span>\n    </a>\n    <a href=\"\" class=\"navbar-brand myNavIconCenter text-black\">\n      <span class=\"glyphicon glyphicon-eye-open\"></span>\n    </a>\n    <a [routerLink]=\"['/user/123']\" class=\"navbar-brand myNavIconRight\">\n      <span class=\"glyphicon glyphicon-user\"></span>\n    </a>\n  </div>"
 
 /***/ }),
 
@@ -1267,6 +1267,8 @@ module.exports = "<div class=\"container-fluid\">\n  <div class=\"navbar navbar-
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return WidgetListComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_widget_service_client__ = __webpack_require__("../../../../../src/app/services/widget.service.client.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1277,10 +1279,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
 var WidgetListComponent = /** @class */ (function () {
-    function WidgetListComponent() {
+    function WidgetListComponent(widgetService, activateRoute) {
+        this.widgetService = widgetService;
+        this.activateRoute = activateRoute;
+        this.widgets = [{}];
     }
     WidgetListComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        // retrieves userId as path parameter
+        this.activateRoute.params.subscribe(function (params) {
+            _this.userId = params['userId'];
+            _this.websiteId = params['websiteId'];
+            _this.pageId = params['pageId'];
+        });
+        // user UserService to retrieve the user instance
+        this.widgets = this.widgetService.findWidgetsByPageId(this.pageId);
     };
     WidgetListComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
@@ -1288,7 +1304,7 @@ var WidgetListComponent = /** @class */ (function () {
             template: __webpack_require__("../../../../../src/app/components/widget/widget-list/widget-list.component.html"),
             styles: [__webpack_require__("../../../../../src/app/components/widget/widget-list/widget-list.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_widget_service_client__["a" /* WidgetService */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* ActivatedRoute */]])
     ], WidgetListComponent);
     return WidgetListComponent;
 }());
@@ -1568,7 +1584,7 @@ var WidgetService = /** @class */ (function () {
             { _id: "345", widgetType: "IMAGE", pageId: "321", width: "100%", url: "http://lorempixel.com/400/200/" },
             { _id: "456", widgetType: "HTML", pageId: "321", text: "<p>Lorem ipsum</p>" },
             { _id: "567", widgetType: "HEADING", pageId: "321", size: 4, text: "Lorem ipsum" },
-            { _id: "678", widgetType: "YOUTUBE", pageId: "321", width: "100%", url: "http://youtube/AM2Ivdi9c4E" },
+            { _id: "678", widgetType: "YOUTUBE", pageId: "321", width: "100%", url: "https://www.youtube.com/embed/XPrxhmuzUyo" },
             { _id: "789", widgetType: "HTML", pageId: "321", text: "<p>Lorem ipsum</p>" },
         ];
         this.api = {
