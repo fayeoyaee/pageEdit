@@ -11,7 +11,7 @@ export class WidgetImageComponent implements OnInit {
   // properties 
   widgetId: String;
   widget = {};
-  widgetname: String;
+  widgettype: String;
   widgettext: String;
   widgeturl: String;
 
@@ -28,7 +28,7 @@ export class WidgetImageComponent implements OnInit {
 
     // user UserService to retrieve the user instance
     this.widget = this.widgetService.findWidgetById(this.widgetId);
-    this.widgetname = this.widget['name'];
+    this.widgettype = this.widget['widgetType'];
     this.widgettext = this.widget['text'];
     this.widgeturl = this.widget['url'];
   }

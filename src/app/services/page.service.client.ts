@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {Http, RequestOptions, Response} from '@angular/http';
-import {environment} from '../../environments/environment';
-import {Router} from '@angular/router';
+import { Injectable } from '@angular/core';
+import { Http, RequestOptions, Response } from '@angular/http';
+import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable()
 
@@ -9,9 +9,9 @@ export class PageService {
     constructor() { }
 
     pages = [
-        { _id: "321", name: "Post 1", websiteId: "456", description: "Lorem"},
-        { _id: "432", name: "Post 2", websiteId: "456", description: "Lorem"},
-        { _id: "543", name: "Post 3", websiteId: "456", description: "Lorem"},
+        { _id: "321", name: "Post 1", websiteId: "456", description: "Lorem" },
+        { _id: "432", name: "Post 2", websiteId: "456", description: "Lorem" },
+        { _id: "543", name: "Post 3", websiteId: "456", description: "Lorem" },
     ];
 
     api = {
@@ -19,7 +19,7 @@ export class PageService {
         'updatePage': this.updatePage,
         'deletePage': this.deletePage,
         'findPageById': this.findPageById,
-        'findPageByWebsiteId': this.findPageByWebsiteId,
+        'findPagesByWebsiteId': this.findPagesByWebsiteId,
     };
 
     createPage(websiteId, page) {
@@ -53,11 +53,14 @@ export class PageService {
         }
     }
 
-    findPageByWebsiteId(websiteId) {
+    findPagesByWebsiteId(websiteId) {
+        var websitePages = [{}];
         for (let x = 0; x < this.pages.length; x++) {
             if (this.pages[x].websiteId == websiteId) {
-                return this.pages[x];
+                websitePages.push(this.pages[x]);
             }
         }
+        websitePages.splice(0, 1);
+        return websitePages;
     }
 }
