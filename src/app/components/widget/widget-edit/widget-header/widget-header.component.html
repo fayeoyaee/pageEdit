@@ -13,19 +13,19 @@
   <form>
     <div class="form-group">
       <label>Name</label>
-      <input type="text" class="form-control" placeholder="">
+      <input [(ngModel)]="widgetname" name="widgetname" id="widgetname" type="text" class="form-control" placeholder={{widgetname}}>
     </div>
     <div class="form-group">
       <label>Text</label>
-      <input type="text" class="form-control" placeholder="US senate">
+      <input [(ngModel)]="widgettext" name="widgettext" id="widgettext" type="text" class="form-control" placeholder={{widgettext}}>
     </div>
     <div class="form-group">
       <label>Size</label>
-      <input type="number" class="form-control" placeholder="3">
+      <input [(ngModel)]="widgetsize" name="widgetsize" id="widgetsize" type="number" class="form-control" placeholder={{widgetsize}}>
     </div>
   </form>
   <p>
-    <a [routerLink]="['/user/01/website/02/page/03/widget']" >
+    <a [routerLink]="['/user/01/website/02/page/03/widget']">
       <button type="button" class="btn btn-block btn-danger">Delete</button>
     </a>
   </p>
