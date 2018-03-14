@@ -1,10 +1,10 @@
 <div class="container-fluid">
   <div class="navbar navbar-fixed-top bg-grey">
-    <a [routerLink]="['/user/01/website/02/page/03/widget']" class="navbar-brand myNavIconLeft text-black">
+    <a [routerLink]="['/user',userId,'website',websiteId,'page',pageId,'widget']" class="navbar-brand myNavIconLeft text-black">
       <span class="glyphicon glyphicon-menu-left"></span>
     </a>
     <div class="navbar-brand myNavIconCenter text-black">Widget Edit</div>
-    <a [routerLink]="['/user/01/website/02/page/03/widget']" class="navbar-brand myNavIconRight text-black">
+    <a [routerLink]="['/user',userId,'website',websiteId,'page',pageId,'widget']" class="navbar-brand myNavIconRight text-black">
       <span class="glyphicon glyphicon-ok"></span>
     </a>
   </div>
@@ -29,17 +29,15 @@
   </form>
 
   <p>
-    <a [routerLink]="['/user/01/website/02/page/03/widget']" >
+    <a [routerLink]="['/user',userId,'website',websiteId,'page',pageId,'widget']" >
       <button type="button" class="btn btn-block btn-primary">Upload Image</button>
     </a>
   </p>
   <p>
-    <a [routerLink]="['/user/01/website/02/page/03/widget']" >
+    <a [routerLink]="['/user',userId,'website',websiteId,'page',pageId,'widget']" >
       <button type="button" class="btn btn-block btn-danger">Delete</button>
     </a>
   </p>
   <div class="navbar navbar-fixed-bottom bg-grey text-black">
-    <a [routerLink]="['/user/01']" class="navbar-brand myNavIconRight">
       <span class="glyphicon glyphicon-user"></span>
-    </a>
   </div>

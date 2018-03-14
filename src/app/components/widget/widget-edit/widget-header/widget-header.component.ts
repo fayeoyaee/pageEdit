@@ -9,11 +9,13 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class WidgetHeaderComponent implements OnInit {
   // properties 
+  userId: String;
+  websiteId: String;
+  pageId: String;
   widgetId: String;
-  widget = {};
   widgettype: String;
   widgettext: String;
-  widgetsize: String;
+  widgetsize: Number;
 
   constructor(private widgetService: WidgetService, private activateRoute: ActivatedRoute) { }
 
@@ -22,15 +24,18 @@ export class WidgetHeaderComponent implements OnInit {
     // retrieves userId as path parameter
     this.activateRoute.params.subscribe(
       (params: any) => {
+        this.userId = params['userId'];
+        this.websiteId = params['websiteId'];
+        this.pageId = params['pageId'];
         this.widgetId = params['widgetId'];
       }
     );
 
     // user UserService to retrieve the user instance
-    this.widget = this.widgetService.findWidgetById(this.widgetId);
-    this.widgettype = this.widget['widgetType'];
-    this.widgettext = this.widget['text'];
-    this.widgetsize = this.widget['size'];
+    var widget = this.widgetService.findWidgetById(this.widgetId);
+    this.widgettype = widget['widgetType'];
+    this.widgettext = widget['text'];
+    this.widgetsize = widget['size'];
   }
 
 }

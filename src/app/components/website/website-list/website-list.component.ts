@@ -23,7 +23,7 @@ export class WebsiteListComponent implements OnInit {
       }
     );
 
-    // user UserService to retrieve the user instance
+    // user websiteService to retrieve the user instance
     this.websites = this.websiteService.findWebsitesByUser(this.userId);
   }
 

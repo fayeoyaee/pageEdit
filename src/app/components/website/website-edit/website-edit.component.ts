@@ -9,8 +9,9 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class WebsiteEditComponent implements OnInit {
   // properties 
+  userId: String;
   websiteId: String;
-  website = {};
+  websites = [{}];
   websitename: String;
   description: String;
 
@@ -21,14 +22,16 @@ export class WebsiteEditComponent implements OnInit {
     // retrieves userId as path parameter
     this.activateRoute.params.subscribe(
       (params: any) => {
+        this.userId = params['userId'];
         this.websiteId = params['websiteId'];
       }
     );
 
     // user UserService to retrieve the user instance
-    this.website = this.websiteService.findWebsiteById(this.websiteId);
-    this.websitename = this.website['name'];
-    this.description = this.website['description'];
+    var website = this.websiteService.findWebsiteById(this.websiteId);
+    this.websites = this.websiteService.findWebsitesByUser(this.userId);
+    this.websitename = website['name'];
+    this.description = website['description'];
   }
 
 }

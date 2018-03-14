@@ -3,7 +3,8 @@
     <a [routerLink]="['/user',userId,'website']" class="navbar-brand myNavIconLeft text-black">
       <span class="glyphicon glyphicon-menu-left"></span>
     </a>
-    <a [routerLink]="['/user/123/website/456/page/321/widget']" class="navbar-brand myNavIconCenter text-black">Pages</a>
+    <!-- use page 321 for now -->
+    <a [routerLink]="['/user/123/website/456/page/321/widget']" class="navbar-brand myNavIconCenter text-black">Page</a>
     <a [routerLink]="['/user/123/website/456/page/new']" class="navbar-brand myNavIconRight text-black">
       <span class="glyphicon glyphicon-plus"></span>
     </a>
@@ -18,7 +19,7 @@
     </li>
   </ul>
   <div class="navbar navbar-fixed-bottom bg-grey text-black">
-    <a [routerLink]="['/user/123']" class="navbar-brand myNavIconRight">
+    <a [routerLink]="['/user', userId]" class="navbar-brand myNavIconRight">
       <span class="glyphicon glyphicon-user"></span>
     </a>
   </div>
