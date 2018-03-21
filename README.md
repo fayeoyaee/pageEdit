@@ -2,6 +2,12 @@
 
 [Deployed application on Heroku](https://infinite-shelf-16355.herokuapp.com/)
 
+# Run locally
+
+```
+npm run build
+node server.js
+```
 <!-- # DefaultAngularRepoWithHeroku
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.4.

@@ -43,12 +43,9 @@
         </div>
       </div>
 
-
+      <!-- 
       <div *ngSwitchCase="'YOUTUBE'">
         <div class="embed-responsive embed-responsive-16by9 thumnail row">
-          <!-- TODO: message port closed before response received -->
-          <!-- <iframe class="embed-responsive-item" [attr.src]="widget.url" allowfullscreen></iframe> -->
-          <!-- <iframe [ngStyle]="{'width': widget.width}" height="300" [attr.src]="widget.url" frameborder="0" allowfullscreen controls></iframe> -->
           <video controls preload=auto [attr.src]="widget.url"></video>
           <div class="icon-group">
             <a [routerLink]="['/user',userId,'website',websiteId,'page',pageId,'widget',widget._id,'youtube']">
@@ -58,6 +55,20 @@
           </div>
         </div>
       </div>
+ -->
+    <!-- temporarily add youtube components here -->
+      <div *ngSwitchCase="'YOUTUBE'">
+        <div class="embed-responsive embed-responsive-16by9 thumnail row">
+          <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/XPrxhmuzUyo" allowfullscreen></iframe>
+          <div class="icon-group">
+            <a href="widget-youtube.html" class="">
+              <span class="glyphicon glyphicon-cog text-primary"></span>
+            </a>
+            <span class="glyphicon glyphicon-menu-hamburger "></span>
+          </div>
+        </div>
+      </div>
+
 
       <div *ngSwitchCase="'HTML'">
         <li class="list-group-item thmnail row">
@@ -71,10 +82,10 @@
           </div>
         </li>
       </div>
+
     </div>
 
   </div>
-  <!-- TODO: return to userId -->
   <div class="navbar navbar-fixed-bottom bg-grey">
     <a href="" class="navbar-brand myNavIconLeft text-black">
       <span class="glyphicon glyphicon-play"></span>
