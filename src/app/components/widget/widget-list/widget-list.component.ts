@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WidgetService } from '../../../services/widget.service.client';
 import { ActivatedRoute } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-widget-list',
@@ -14,7 +15,7 @@ export class WidgetListComponent implements OnInit {
   pageId: String;
   widgets = [{}];
 
-  constructor(private widgetService: WidgetService, private activateRoute: ActivatedRoute) { }
+  constructor(private widgetService: WidgetService, private activateRoute: ActivatedRoute, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
 
@@ -29,6 +30,13 @@ export class WidgetListComponent implements OnInit {
 
     // user UserService to retrieve the user instance
     this.widgets = this.widgetService.findWidgetsByPageId(this.pageId);
+
+    for (let i = 0; i < this.widgets.length; i++) {
+      if (this.widgets[i]['url']) {
+        this.widgets[i]['url'] = this.sanitizer.bypassSecurityTrustResourceUrl(this.widgets[i]['url']);
+      }
+    }
+
   }
 
 }
