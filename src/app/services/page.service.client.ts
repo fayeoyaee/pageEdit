@@ -1,18 +1,15 @@
-import { Injectable } from '@angular/core';
-import { Http, RequestOptions, Response } from '@angular/http';
-import { environment } from '../../environments/environment';
-import { Router } from '@angular/router';
+import {Injectable} from '@angular/core';
+import {Http, Response} from '@angular/http';
+import 'rxjs/Rx'; // unlock map operator
+import {environment} from '../../environments/environment';
 
 @Injectable()
 
 export class PageService {
-    constructor() { }
+    constructor(private _http: Http) { }
 
-    pages = [
-        { _id: "321", name: "Post 1", websiteId: "456", description: "Lorem" },
-        { _id: "432", name: "Post 2", websiteId: "456", description: "Lorem" },
-        { _id: "543", name: "Post 3", websiteId: "456", description: "Lorem" },
-    ];
+    // TODO: find env baseUrl
+    baseUrl = environment.baseUrl;
 
     api = {
         'createPage': this.createPage,
@@ -23,44 +20,34 @@ export class PageService {
     };
 
     createPage(websiteId, page) {
-        page.websiteId = websiteId;
-        this.pages.push(page);
-    }
+        return this._http.post('api/website/' + websiteId + "/page", page)
+   }
 
     updatePage(pageId, page) {
-        for (let x = 0; x < this.pages.length; x++) {
-            if (this.pages[x]._id == pageId) {
-                this.pages[x] = page;
-                return this.pages[x];
-            }
-        }
-    }
+        return this._http.put('api/page/' + pageId, page)
+   }
 
     deletePage(pageId) {
-        for (let x = 0; x < this.pages.length; x++) {
-            if (this.pages[x]._id == pageId) {
-                this.pages.splice(x, 1);
-                return;
-            }
-        }
-    }
+        return this._http.delete('api/page/' + pageId)
+   }
 
     findPageById(pageId) {
-        for (let x = 0; x < this.pages.length; x++) {
-            if (this.pages[x]._id == pageId) {
-                return this.pages[x];
-            }
-        }
-    }
+        return this._http.get('api/page/' + pageId)
+            .map(
+                (res: Response) => {
+                    const data = res.json();
+                    return data;
+                }
+            )
+   }
 
     findPagesByWebsiteId(websiteId) {
-        var websitePages = [{}];
-        for (let x = 0; x < this.pages.length; x++) {
-            if (this.pages[x].websiteId == websiteId) {
-                websitePages.push(this.pages[x]);
-            }
-        }
-        websitePages.splice(0, 1);
-        return websitePages;
-    }
+        return this._http.get('api/website/' + websiteId + "/page")
+            .map(
+                (res: Response) => {
+                    const data = res.json();
+                    return data;
+                }
+            )
+   }
 }

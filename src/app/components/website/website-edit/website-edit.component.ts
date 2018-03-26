@@ -12,6 +12,7 @@ export class WebsiteEditComponent implements OnInit {
   userId: String;
   websiteId: String;
   websites = [{}];
+  website: {};
   websitename: String;
   description: String;
 
@@ -28,10 +29,23 @@ export class WebsiteEditComponent implements OnInit {
     );
 
     // user UserService to retrieve the user instance
-    var website = this.websiteService.findWebsiteById(this.websiteId);
-    this.websites = this.websiteService.findWebsitesByUser(this.userId);
-    this.websitename = website['name'];
-    this.description = website['description'];
+    this.websiteService.findWebsiteById(this.websiteId)
+      .subscribe(
+        (data: any) => {
+          this.website = data;
+          this.websitename = this.website['name'];
+          this.description = this.website['description'];
+
+        }
+      )
+
+    this.websiteService.findWebsitesByUser(this.userId)
+      .subscribe(
+        (data: any) => {
+          this.websites = data;
+        }
+      )
+
   }
 
 }

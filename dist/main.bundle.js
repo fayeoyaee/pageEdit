@@ -164,7 +164,7 @@ var AppModule = /** @class */ (function () {
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
-                __WEBPACK_IMPORTED_MODULE_3__angular_http__["a" /* HttpModule */],
+                __WEBPACK_IMPORTED_MODULE_3__angular_http__["b" /* HttpModule */],
                 __WEBPACK_IMPORTED_MODULE_24__app_routing__["a" /* Routing */]
             ],
             providers: [__WEBPACK_IMPORTED_MODULE_20__services_user_service_client__["a" /* UserService */], __WEBPACK_IMPORTED_MODULE_21__services_website_service_client__["a" /* WebsiteService */], __WEBPACK_IMPORTED_MODULE_22__services_page_service_client__["a" /* PageService */], __WEBPACK_IMPORTED_MODULE_23__services_widget_service_client__["a" /* WidgetService */]],
@@ -378,7 +378,10 @@ var PageListComponent = /** @class */ (function () {
             _this.websiteId = params['websiteId'];
         });
         // user UserService to retrieve the user instance
-        this.pages = this.pageService.findPagesByWebsiteId(this.websiteId);
+        this.pageService.findPagesByWebsiteId(this.websiteId)
+            .subscribe(function (data) {
+            _this.pages = data;
+        });
     };
     PageListComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
@@ -735,10 +738,16 @@ var WebsiteEditComponent = /** @class */ (function () {
             _this.websiteId = params['websiteId'];
         });
         // user UserService to retrieve the user instance
-        var website = this.websiteService.findWebsiteById(this.websiteId);
-        this.websites = this.websiteService.findWebsitesByUser(this.userId);
-        this.websitename = website['name'];
-        this.description = website['description'];
+        this.websiteService.findWebsiteById(this.websiteId)
+            .subscribe(function (data) {
+            _this.website = data;
+            _this.websitename = _this.website['name'];
+            _this.description = _this.website['description'];
+        });
+        this.websiteService.findWebsitesByUser(this.userId)
+            .subscribe(function (data) {
+            _this.websites = data;
+        });
     };
     WebsiteEditComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
@@ -813,7 +822,12 @@ var WebsiteListComponent = /** @class */ (function () {
             _this.userId = params['userId'];
         });
         // user websiteService to retrieve the user instance
-        this.websites = this.websiteService.findWebsitesByUser(this.userId);
+        this.websiteService.findWebsitesByUser(this.userId)
+            .subscribe(function (data) {
+            _this.websites = data;
+        }, function (error) {
+            console.log(error);
+        });
     };
     WebsiteListComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
@@ -888,7 +902,10 @@ var WebsiteNewComponent = /** @class */ (function () {
             _this.userId = params['userId'];
         });
         // use websiteService to retrieve the user instance
-        this.websites = this.websiteService.findWebsitesByUser(this.userId);
+        this.websiteService.findWebsitesByUser(this.userId)
+            .subscribe(function (data) {
+            _this.websites = data;
+        });
     };
     WebsiteNewComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
@@ -1299,7 +1316,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/widget/widget-list/widget-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\n  <div class=\"navbar navbar-fixed-top bg-grey\">\n    <!-- go back to page list -->\n    <a [routerLink]=\"['/user',userId,'website',websiteId, 'page']\" class=\"navbar-brand myNavIconLeft text-black\">\n      <span class=\"glyphicon glyphicon-menu-left\"></span>\n    </a>\n    <div class=\"navbar-brand myNavIconCenter text-black\">Widget List</div>\n    <!-- ok goes to widget chooser -->\n    <a [routerLink]=\"['/user',userId,'website',websiteId, 'page',pageId, 'widget/new']\" class=\"navbar-brand myNavIconRight text-black\">\n      <span class=\"glyphicon glyphicon-ok\"></span>\n    </a>\n  </div>\n\n\n  <div class=\"col-xs-12\" *ngFor=\"let widget of widgets\">\n\n    <div [ngSwitch]=\"widget.widgetType\">\n      <div *ngSwitchCase=\"'HEADING'\">\n        <li class=\"row list-group-item thmnail\">\n          <div class=\"icon-header\">\n            <!-- control heading size using ngstyle -->\n            <h1 [ngStyle]=\"{'font-size': widget.size}\">{{widget.text}}</h1>\n          </div>\n          <div class=\"icon-group\">\n            <a [routerLink]=\"['/user',userId,'website',websiteId, 'page',pageId, 'widget',widget._id,'header']\">\n              <span class=\"glyphicon glyphicon-cog text-primary\"></span>\n            </a>\n            <span class=\"glyphicon glyphicon-menu-hamburger\"></span>\n          </div>\n        </li>\n      </div>\n\n      <div *ngSwitchCase=\"'IMAGE'\">\n        <div class=\"row  list-group-item tthumnail\">\n          <!-- TODO: image loading too slow -->\n          <img [ngStyle]=\"{'width': widget.width}\" class=\"img-responsive\" [attr.src]=\"widget.url\" alt=\"image\" />\n          <div class=\"icon-group\">\n            <a [routerLink]=\"['/user',userId,'website',websiteId,'page',pageId,'widget',widget._id,'image']\">\n              <span class=\"glyphicon glyphicon-cog text-primary\"></span>\n            </a>\n            <span class=\"glyphicon glyphicon-menu-hamburger\"></span>\n          </div>\n        </div>\n      </div>\n\n      <div *ngSwitchCase=\"'YOUTUBE'\">\n        <div class=\"embed-responsive embed-responsive-16by9 thumnail row\">\n          <iframe class=\"embed-responsive-item\" [attr.src]=\"widget.url\" allowfullscreen></iframe>\n          <div class=\"icon-group\">\n            <a [routerLink]=\"['/user',userId,'website',websiteId,'page',pageId,'widget',widget._id,'youtube']\">\n              <span class=\"glyphicon glyphicon-cog text-primary\"></span>\n            </a>\n            <span class=\"glyphicon glyphicon-menu-hamburger \"></span>\n          </div>\n        </div>\n      </div>\n    <!-- temporarily add youtube components here -->\n      <!-- <div *ngSwitchCase=\"'YOUTUBE'\">\n        <div class=\"embed-responsive embed-responsive-16by9 thumnail row\">\n          <iframe class=\"embed-responsive-item\" src=\"https://www.youtube.com/embed/XPrxhmuzUyo\" allowfullscreen></iframe>\n          <div class=\"icon-group\">\n            <a href=\"widget-youtube.html\" class=\"\">\n              <span class=\"glyphicon glyphicon-cog text-primary\"></span>\n            </a>\n            <span class=\"glyphicon glyphicon-menu-hamburger \"></span>\n          </div>\n        </div>\n      </div>\n -->\n\n      <div *ngSwitchCase=\"'HTML'\">\n        <li class=\"list-group-item thmnail row\">\n          <div>\n            <!-- TODO: use angular sanitize module to render html strings -->\n            {{widget.text}}\n          </div>\n          <div class=\"icon-group\">\n            <span class=\"glyphicon glyphicon-cog text-primary\"></span>\n            <span class=\"glyphicon glyphicon-menu-hamburger \"></span>\n          </div>\n        </li>\n      </div>\n\n    </div>\n\n  </div>\n  <div class=\"navbar navbar-fixed-bottom bg-grey\">\n    <a href=\"\" class=\"navbar-brand myNavIconLeft text-black\">\n      <span class=\"glyphicon glyphicon-play\"></span>\n    </a>\n    <a href=\"\" class=\"navbar-brand myNavIconCenter text-black\">\n      <span class=\"glyphicon glyphicon-eye-open\"></span>\n    </a>\n    <!-- return to profile -->\n    <a [routerLink]=\"['/user', userId]\" class=\"navbar-brand myNavIconRight\">\n      <span class=\"glyphicon glyphicon-user\"></span>\n    </a>\n  </div>"
+module.exports = "<div class=\"container-fluid\">\n  <div class=\"navbar navbar-fixed-top bg-grey\">\n    <!-- go back to page list -->\n    <a [routerLink]=\"['/user',userId,'website',websiteId, 'page']\" class=\"navbar-brand myNavIconLeft text-black\">\n      <span class=\"glyphicon glyphicon-menu-left\"></span>\n    </a>\n    <div class=\"navbar-brand myNavIconCenter text-black\">Widget List</div>\n    <!-- ok goes to widget chooser -->\n    <a [routerLink]=\"['/user',userId,'website',websiteId, 'page',pageId, 'widget/new']\" class=\"navbar-brand myNavIconRight text-black\">\n      <span class=\"glyphicon glyphicon-ok\"></span>\n    </a>\n  </div>\n\n\n  <div class=\"col-xs-12\" *ngFor=\"let widget of widgets\">\n\n    <div [ngSwitch]=\"widget.widgetType\">\n      <div *ngSwitchCase=\"'HEADING'\">\n        <li class=\"row list-group-item thmnail\">\n          <div class=\"icon-header\">\n            <!-- control heading size using ngstyle -->\n            <h1 [ngStyle]=\"{'font-size': widget.size}\">{{widget.text}}</h1>\n          </div>\n          <div class=\"icon-group\">\n            <a [routerLink]=\"['/user',userId,'website',websiteId, 'page',pageId, 'widget',widget._id,'header']\">\n              <span class=\"glyphicon glyphicon-cog text-primary\"></span>\n            </a>\n            <span class=\"glyphicon glyphicon-menu-hamburger\"></span>\n          </div>\n        </li>\n      </div>\n\n      <div *ngSwitchCase=\"'IMAGE'\">\n        <div class=\"row  list-group-item tthumnail\">\n          <!-- TODO: image loading too slow -->\n          <img [ngStyle]=\"{'width': widget.width}\" class=\"img-responsive\" [attr.src]=\"widget.url\" alt=\"image\" />\n          <div class=\"icon-group\">\n            <a [routerLink]=\"['/user',userId,'website',websiteId,'page',pageId,'widget',widget._id,'image']\">\n              <span class=\"glyphicon glyphicon-cog text-primary\"></span>\n            </a>\n            <span class=\"glyphicon glyphicon-menu-hamburger\"></span>\n          </div>\n        </div>\n      </div>\n\n      <div *ngSwitchCase=\"'YOUTUBE'\">\n        <div class=\"embed-responsive embed-responsive-16by9 thumnail row\">\n          <iframe class=\"embed-responsive-item\" [attr.src]=\"widget.url\" allowfullscreen></iframe>\n          <div class=\"icon-group\">\n            <a [routerLink]=\"['/user',userId,'website',websiteId,'page',pageId,'widget',widget._id,'youtube']\">\n              <span class=\"glyphicon glyphicon-cog text-primary\"></span>\n            </a>\n            <span class=\"glyphicon glyphicon-menu-hamburger \"></span>\n          </div>\n        </div>\n      </div>\n\n      <div *ngSwitchCase=\"'HTML'\">\n        <li class=\"list-group-item thmnail row\">\n          <div>\n            <!-- TODO: use angular sanitize module to render html strings -->\n            {{widget.text}}\n          </div>\n          <div class=\"icon-group\">\n            <span class=\"glyphicon glyphicon-cog text-primary\"></span>\n            <span class=\"glyphicon glyphicon-menu-hamburger \"></span>\n          </div>\n        </li>\n      </div>\n\n    </div>\n\n  </div>\n  <div class=\"navbar navbar-fixed-bottom bg-grey\">\n    <a href=\"\" class=\"navbar-brand myNavIconLeft text-black\">\n      <span class=\"glyphicon glyphicon-play\"></span>\n    </a>\n    <a href=\"\" class=\"navbar-brand myNavIconCenter text-black\">\n      <span class=\"glyphicon glyphicon-eye-open\"></span>\n    </a>\n    <!-- return to profile -->\n    <a [routerLink]=\"['/user', userId]\" class=\"navbar-brand myNavIconRight\">\n      <span class=\"glyphicon glyphicon-user\"></span>\n    </a>\n  </div>"
 
 /***/ }),
 
@@ -1341,12 +1358,15 @@ var WidgetListComponent = /** @class */ (function () {
             _this.pageId = params['pageId'];
         });
         // user UserService to retrieve the user instance
-        this.widgets = this.widgetService.findWidgetsByPageId(this.pageId);
-        for (var i = 0; i < this.widgets.length; i++) {
-            if (this.widgets[i]['url']) {
-                this.widgets[i]['url'] = this.sanitizer.bypassSecurityTrustResourceUrl(this.widgets[i]['url']);
+        this.widgetService.findWidgetsByPageId(this.pageId)
+            .subscribe(function (data) {
+            _this.widgets = data;
+            for (var i = 0; i < _this.widgets.length; i++) {
+                if (_this.widgets[i]['url']) {
+                    _this.widgets[i]['url'] = _this.sanitizer.bypassSecurityTrustResourceUrl(_this.widgets[i]['url']);
+                }
             }
-        }
+        });
     };
     WidgetListComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
@@ -1369,6 +1389,9 @@ var WidgetListComponent = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PageService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__ = __webpack_require__("../../../../rxjs/_esm5/Rx.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1379,13 +1402,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+ // unlock map operator
+
 var PageService = /** @class */ (function () {
-    function PageService() {
-        this.pages = [
-            { _id: "321", name: "Post 1", websiteId: "456", description: "Lorem" },
-            { _id: "432", name: "Post 2", websiteId: "456", description: "Lorem" },
-            { _id: "543", name: "Post 3", websiteId: "456", description: "Lorem" },
-        ];
+    function PageService(_http) {
+        this._http = _http;
+        // TODO: find env baseUrl
+        this.baseUrl = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].baseUrl;
         this.api = {
             'createPage': this.createPage,
             'updatePage': this.updatePage,
@@ -1395,45 +1419,31 @@ var PageService = /** @class */ (function () {
         };
     }
     PageService.prototype.createPage = function (websiteId, page) {
-        page.websiteId = websiteId;
-        this.pages.push(page);
+        return this._http.post('api/website/' + websiteId + "/page", page);
     };
     PageService.prototype.updatePage = function (pageId, page) {
-        for (var x = 0; x < this.pages.length; x++) {
-            if (this.pages[x]._id == pageId) {
-                this.pages[x] = page;
-                return this.pages[x];
-            }
-        }
+        return this._http.put('api/page/' + pageId, page);
     };
     PageService.prototype.deletePage = function (pageId) {
-        for (var x = 0; x < this.pages.length; x++) {
-            if (this.pages[x]._id == pageId) {
-                this.pages.splice(x, 1);
-                return;
-            }
-        }
+        return this._http.delete('api/page/' + pageId);
     };
     PageService.prototype.findPageById = function (pageId) {
-        for (var x = 0; x < this.pages.length; x++) {
-            if (this.pages[x]._id == pageId) {
-                return this.pages[x];
-            }
-        }
+        return this._http.get('api/page/' + pageId)
+            .map(function (res) {
+            var data = res.json();
+            return data;
+        });
     };
     PageService.prototype.findPagesByWebsiteId = function (websiteId) {
-        var websitePages = [{}];
-        for (var x = 0; x < this.pages.length; x++) {
-            if (this.pages[x].websiteId == websiteId) {
-                websitePages.push(this.pages[x]);
-            }
-        }
-        websitePages.splice(0, 1);
-        return websitePages;
+        return this._http.get('api/website/' + websiteId + "/page")
+            .map(function (res) {
+            var data = res.json();
+            return data;
+        });
     };
     PageService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])(),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */]])
     ], PageService);
     return PageService;
 }());
@@ -1448,6 +1458,9 @@ var PageService = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__ = __webpack_require__("../../../../rxjs/_esm5/Rx.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1458,8 +1471,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+ // unlock map operator
+
 var UserService = /** @class */ (function () {
-    function UserService() {
+    function UserService(_http) {
+        this._http = _http;
+        // TODO: find env baseUrl
+        this.baseUrl = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].baseUrl;
         this.users = [
             { _id: "123", username: "alice", password: "alice", firstName: "Alice", lastName: "Wonder" },
             { _id: "234", username: "bob", password: "bob", firstName: "Bob", lastName: "Marley" },
@@ -1475,50 +1494,47 @@ var UserService = /** @class */ (function () {
         };
     }
     UserService.prototype.createUser = function (user) {
-        user._id = Math.random();
-        this.users.push(user);
-        return user;
+        return this._http.post('api/user', user)
+            .map(function (res) {
+            var data = res.json();
+            return data;
+        });
     };
     UserService.prototype.updateUser = function (userId, user) {
-        for (var x = 0; x < this.users.length; x++) {
-            if (this.users[x]._id == userId) {
-                this.users[x] = user;
-                return this.users[x];
-            }
-        }
+        return this._http.put('api/user' + userId, user)
+            .map(function (res) {
+            var data = res.json();
+            return data;
+        });
     };
     UserService.prototype.deleteUser = function (userId) {
-        for (var x = 0; x < this.users.length; x++) {
-            if (this.users[x]._id == userId) {
-                this.users.splice(x, 1);
-                return;
-            }
-        }
+        return this._http.delete('api/user' + userId, userId);
     };
     UserService.prototype.findUserById = function (userId) {
-        for (var x = 0; x < this.users.length; x++) {
-            if (this.users[x]._id == userId) {
-                return this.users[x];
-            }
-        }
+        // map the received response in a standard format
+        return this._http.get(this.baseUrl + 'api/user' + userId)
+            .map(function (res) {
+            var data = res.json();
+            return data;
+        });
     };
     UserService.prototype.findUserByUsername = function (userName) {
-        for (var x = 0; x < this.users.length; x++) {
-            if (this.users[x].username == userName) {
-                return this.users[x];
-            }
-        }
+        return this._http.get('api/user?username=' + userName)
+            .map(function (res) {
+            var data = res.json();
+            return data;
+        });
     };
     UserService.prototype.findUserByCredentials = function (userName, password) {
-        for (var x = 0; x < this.users.length; x++) {
-            if (this.users[x].username == userName && this.users[x].password == password) {
-                return this.users[x];
-            }
-        }
+        return this._http.get('api/user?username=' + userName + '&password=' + password)
+            .map(function (res) {
+            var data = res.json();
+            return data;
+        });
     };
     UserService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])(),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */]])
     ], UserService);
     return UserService;
 }());
@@ -1533,6 +1549,9 @@ var UserService = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return WebsiteService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__ = __webpack_require__("../../../../rxjs/_esm5/Rx.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1543,8 +1562,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+ // unlock map operator
+
 var WebsiteService = /** @class */ (function () {
-    function WebsiteService() {
+    function WebsiteService(_http) {
+        this._http = _http;
+        // TODO: find env baseUrl
+        this.baseUrl = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].baseUrl;
         this.websites = [
             { _id: "123", name: "Facebook", developerId: "456", description: "Lorem" },
             { _id: "234", name: "Tweeter", developerId: "456", description: "Lorem" },
@@ -1562,46 +1587,41 @@ var WebsiteService = /** @class */ (function () {
             'findWebsitesByUser': this.findWebsitesByUser,
         };
     }
-    WebsiteService.prototype.createWebsite = function (websiteId, website) {
-        website.developerId = websiteId;
-        this.websites.push(website);
+    // TODO: catch error
+    WebsiteService.prototype.createWebsite = function (userId, website) {
+        return this._http.post('api/user/' + userId + "/website", website)
+            .map(function (res) {
+            var data = res.json();
+            return data;
+        });
     };
     WebsiteService.prototype.updateWebsite = function (websiteId, website) {
-        for (var x = 0; x < this.websites.length; x++) {
-            if (this.websites[x]._id == websiteId) {
-                this.websites[x] = website;
-                return this.websites[x];
-            }
-        }
+        return this._http.put('api/website/' + websiteId, website)
+            .map(function (res) {
+            var data = res.json();
+            return data;
+        });
     };
     WebsiteService.prototype.deleteWebsite = function (websiteId) {
-        for (var x = 0; x < this.websites.length; x++) {
-            if (this.websites[x]._id == websiteId) {
-                this.websites.splice(x, 1);
-                return;
-            }
-        }
+        return this._http.delete('api/website/' + websiteId);
     };
     WebsiteService.prototype.findWebsiteById = function (websiteId) {
-        for (var x = 0; x < this.websites.length; x++) {
-            if (this.websites[x]._id == websiteId) {
-                return this.websites[x];
-            }
-        }
+        return this._http.get('api/website/' + websiteId)
+            .map(function (res) {
+            var data = res.json();
+            return data;
+        });
     };
     WebsiteService.prototype.findWebsitesByUser = function (userId) {
-        var userWebsites = [{}];
-        for (var x = 0; x < this.websites.length; x++) {
-            if (this.websites[x].developerId == userId) {
-                userWebsites.push(this.websites[x]);
-            }
-        }
-        userWebsites.splice(0, 1);
-        return userWebsites;
+        return this._http.get('/api/user/' + userId + "/website")
+            .map(function (res) {
+            var data = res.json();
+            return data;
+        });
     };
     WebsiteService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])(),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */]])
     ], WebsiteService);
     return WebsiteService;
 }());
@@ -1616,6 +1636,9 @@ var WebsiteService = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return WidgetService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__ = __webpack_require__("../../../../rxjs/_esm5/Rx.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__("../../../../../src/environments/environment.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1626,17 +1649,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+ // unlock map operator
+
 var WidgetService = /** @class */ (function () {
-    function WidgetService() {
-        this.widgets = [
-            { _id: "123", widgetType: "HEADING", pageId: "321", size: 2, text: "GIZMODO" },
-            { _id: "234", widgetType: "HEADING", pageId: "321", size: 4, text: "Lorem ipsum" },
-            { _id: "345", widgetType: "IMAGE", pageId: "321", width: "100%", url: "http://lorempixel.com/400/200/" },
-            { _id: "456", widgetType: "HTML", pageId: "321", text: "<p>Lorem ipsum</p>" },
-            { _id: "567", widgetType: "HEADING", pageId: "321", size: 4, text: "Lorem ipsum" },
-            { _id: "678", widgetType: "YOUTUBE", pageId: "321", width: "100%", url: "https://www.youtube.com/embed/XPrxhmuzUyo" },
-            { _id: "789", widgetType: "HTML", pageId: "321", text: "<p>Lorem ipsum</p>" },
-        ];
+    function WidgetService(_http) {
+        this._http = _http;
+        // TODO: find env baseUrl
+        this.baseUrl = __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].baseUrl;
         this.api = {
             'createWidget': this.createWidget,
             'updateWidget': this.updateWidget,
@@ -1646,45 +1666,31 @@ var WidgetService = /** @class */ (function () {
         };
     }
     WidgetService.prototype.createWidget = function (pageId, widget) {
-        widget.pageId = pageId;
-        this.widgets.push(widget);
+        return this._http.post('api/page/' + pageId + "/widget", widget);
     };
-    WidgetService.prototype.updateWidget = function (widgetId, website) {
-        for (var x = 0; x < this.widgets.length; x++) {
-            if (this.widgets[x]._id == widgetId) {
-                this.widgets[x] = website;
-                return this.widgets[x];
-            }
-        }
+    WidgetService.prototype.updateWidget = function (widgetId, widget) {
+        return this._http.put('api/widget/' + widgetId, widget);
     };
     WidgetService.prototype.deleteWidget = function (widgetId) {
-        for (var x = 0; x < this.widgets.length; x++) {
-            if (this.widgets[x]._id == widgetId) {
-                this.widgets.splice(x, 1);
-                return;
-            }
-        }
+        return this._http.delete('api/widget/' + widgetId);
     };
     WidgetService.prototype.findWidgetById = function (widgetId) {
-        for (var x = 0; x < this.widgets.length; x++) {
-            if (this.widgets[x]._id == widgetId) {
-                return this.widgets[x];
-            }
-        }
+        return this._http.get('api/widget/' + widgetId)
+            .map(function (res) {
+            var data = res.json();
+            return data;
+        });
     };
     WidgetService.prototype.findWidgetsByPageId = function (pageId) {
-        var pageWidgets = [{}];
-        for (var x = 0; x < this.widgets.length; x++) {
-            if (this.widgets[x].pageId == pageId) {
-                pageWidgets.push(this.widgets[x]);
-            }
-        }
-        pageWidgets.splice(0, 1);
-        return pageWidgets;
+        return this._http.get('api/page/' + pageId + "/widget")
+            .map(function (res) {
+            var data = res.json();
+            return data;
+        });
     };
     WidgetService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])(),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */]])
     ], WidgetService);
     return WidgetService;
 }());
@@ -1703,7 +1709,8 @@ var WidgetService = /** @class */ (function () {
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 var environment = {
-    production: false
+    production: false,
+    baseUrl: ""
 };
 
 

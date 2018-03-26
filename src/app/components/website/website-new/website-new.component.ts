@@ -24,7 +24,14 @@ export class WebsiteNewComponent implements OnInit {
     );
 
     // use websiteService to retrieve the user instance
-    this.websites = this.websiteService.findWebsitesByUser(this.userId);
+    this.websiteService.findWebsitesByUser(this.userId)
+      .subscribe(
+        (data: any) => {
+          this.websites = data;
+        }
+      )
+
+
   }
 
 }

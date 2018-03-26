@@ -26,7 +26,12 @@ export class PageListComponent implements OnInit {
     );
 
     // user UserService to retrieve the user instance
-    this.pages = this.pageService.findPagesByWebsiteId(this.websiteId);
+    this.pageService.findPagesByWebsiteId(this.websiteId)
+    .subscribe(
+      (data: any) => {
+        this.pages = data;
+      }
+    )
   }
 
 }

@@ -29,13 +29,18 @@ export class WidgetListComponent implements OnInit {
     );
 
     // user UserService to retrieve the user instance
-    this.widgets = this.widgetService.findWidgetsByPageId(this.pageId);
+    this.widgetService.findWidgetsByPageId(this.pageId)
+      .subscribe(
+        (data: any) => {
+          this.widgets = data;
+          for (let i = 0; i < this.widgets.length; i++) {
+            if (this.widgets[i]['url']) {
+              this.widgets[i]['url'] = this.sanitizer.bypassSecurityTrustResourceUrl(this.widgets[i]['url']);
+            }
+          }
+        }
+      )
 
-    for (let i = 0; i < this.widgets.length; i++) {
-      if (this.widgets[i]['url']) {
-        this.widgets[i]['url'] = this.sanitizer.bypassSecurityTrustResourceUrl(this.widgets[i]['url']);
-      }
-    }
 
   }
 
