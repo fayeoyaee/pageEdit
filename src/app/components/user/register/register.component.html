@@ -1,25 +1,54 @@
 <div class="container">
+  <div *ngIf="errorFlag" class="alert alert-danger">
+    {{errorMsg}}
+  </div>
+
   <h1>Register</h1>
-  <form>
-    <div class="form-group">
-      <input type="text" class="form-control" placeholder="username">
-    </div>
-    <div class="form-group">
-      <input type="password" class="form-control" placeholder="password">
-    </div>
-    <div class="form-group">
-      <input type="password" class="form-control" placeholder="verify password">
-    </div>
-    <p>
-      <!-- use user 123 Alice for now -->
-      <a [routerLink]="['/user/123']">
-        <button type="button" class="btn btn-block btn-primary">Register</button>
-      </a>
-    </p>
-    <p>
-      <a [routerLink]="['/login']">
-        <button type="button" class="btn btn-block btn-danger">Cancel</button>
-      </a>
-    </p>
+  <form (ngSubmit)="register()" #f="ngForm">
+    <!-- add ngModel directive and set name field at each HTML input field or control -->
+    <!-- add validation to check user input by adding required attribute to input fields -->
+    <!-- add dynamically added css classes like input.ngInvalid.ngTouched to highlight invalid input fields -->
+
+    <label>User Name</label>
+    <input placeholder="username" name="username" type="text" class="form-control" ngModel required #username="ngModel" />
+    <span class="help-block" *ngIf="!username.valid && username.touched">
+      Please enter username!
+    </span>
+
+    <label>Password</label>
+    <input placeholder="password" name="password" type="password" class="form-control" ngModel required #password="ngModel" />
+    <span class="help-block" *ngIf="!password.valid && password.touched">
+      Please enter password!
+    </span>
+
+    <label>Verify password</label>
+    <input placeholder="verify password" name="password2" type="password" class="form-control" ngModel required #password2="ngModel"
+    />
+    <span class="help-block" *ngIf="!password2.valid && password2.touched ">
+      Please verify password!
+    </span>
+
+    <label>First Name</label>
+    <input placeholder="firstName" name="firstName" type="text" class="form-control" ngModel required #firstName="ngModel" />
+    <span class="help-block" *ngIf="!firstName.valid && firstName.touched">
+      Please enter firstName!
+    </span>
+
+    <label>Last Name</label>
+    <input placeholder="lastName" name="lastName" type="text" class="form-control" ngModel required #lastName="ngModel" />
+    <span class="help-block" *ngIf="!lastName.valid && lastName.touched">
+      Please enter lastName!
+    </span>
+
+    <label>Email</label>
+    <input placeholder="email" name="email" type="text" class="form-control" ngModel required #email="ngModel" />
+    <span class="help-block" *ngIf="!email.valid && email.touched">
+      Please enter email!
+    </span>
+
+    <button type="button" class="btn btn-block btn-primary" (click)="register()">Register</button>
+    <a [routerLink]="['/login']">
+      <button type="button" class="btn btn-block btn-danger">Cancel</button>
+    </a>
   </form>
 </div>

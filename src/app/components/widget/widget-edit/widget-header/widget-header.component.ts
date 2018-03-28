@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { WidgetService } from '../../../../services/widget.service.client';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-widget-header',
@@ -8,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./widget-header.component.css']
 })
 export class WidgetHeaderComponent implements OnInit {
+  @ViewChild('f') updateForm: NgForm;
   // properties 
   userId: String;
   websiteId: String;
@@ -16,14 +18,20 @@ export class WidgetHeaderComponent implements OnInit {
   widgettype: String;
   widgettext: String;
   widgetsize: Number;
+  sizePh: Number;
+  textPh: String;
+  typePh: String;
+  errorFlag: boolean;
+  errorMsg: String;
 
-  constructor(private widgetService: WidgetService, private activateRoute: ActivatedRoute) { }
+  constructor(private widgetService: WidgetService, private router: Router, private activateRoute: ActivatedRoute) { }
 
   ngOnInit() {
 
     // retrieves userId as path parameter
     this.activateRoute.params.subscribe(
       (params: any) => {
+
         this.userId = params['userId'];
         this.websiteId = params['websiteId'];
         this.pageId = params['pageId'];
@@ -32,10 +40,54 @@ export class WidgetHeaderComponent implements OnInit {
     );
 
     // user UserService to retrieve the user instance
-    var widget = this.widgetService.findWidgetById(this.widgetId);
-    this.widgettype = widget['widgetType'];
-    this.widgettext = widget['text'];
-    this.widgetsize = widget['size'];
+    this.widgetService.findWidgetById(this.widgetId)
+      .subscribe(
+        (data: any) => {
+          var widget = data;
+          this.typePh = widget['widgetType'];
+          this.textPh = widget['text'];
+          this.sizePh = widget['size'];
+        })
+  }
+  update() {
+    console.log("hi from web edit")
+    var type = this.updateForm.value.widgettype;
+    var text = this.updateForm.value.widgettext;
+    var size = this.updateForm.value.widgetsize;
+    var newWidget = { widgetType: type, text: text, size: size }
+    for (let key of Object.keys(newWidget)) {
+      if (newWidget[key] == "") {
+        this.errorFlag = true;
+        this.errorMsg = "widget info incomplete"
+        return
+      }
+    }
+
+    this.widgetService.updateWidget(this.widgetId, newWidget)
+      .subscribe(
+        (data: any) => {
+          console.log("widget update succeed")
+          this.router.navigate(["/user", this.userId, "website", this.websiteId, "page", this.pageId, "widget"])
+        },
+        (error: any) => {
+          console.log("widget update error")
+        })
   }
 
+  delete() {
+    console.log("hi from widget edit delete")
+
+    this.widgetService.deleteWidget(this.widgetId)
+      .subscribe(
+        (data: any) => {
+          console.log("widget delete succeed")
+          this.router.navigate(["/user", this.userId, "website", this.websiteId, "page", this.pageId, "widget"])
+        },
+        (error: any) => {
+          console.log("widget delete error")
+        })
+
+  }
 }
+
+

@@ -14,8 +14,21 @@ module.exports = function (app) {
         var userId = req.params.userId;
         var website = req.body;
 
+        website._id = Math.floor(Math.random() * 1000);
+        var flag = true;
+        while (flag) {
+            for (let aweb in websites) {
+                if (aweb._id == website._id) {
+                    flag = true;
+                    break;
+                }
+            }
+            flag = false;
+        }
         website.developerId = userId;
         this.websites.push(website);
+        console.log("websites")
+        console.log(websites)
         return res.send(website);
     });
 
@@ -41,21 +54,27 @@ module.exports = function (app) {
                 return res.send(this.websites[x]);
             }
         }
-   });
+    });
 
-   // for updateWebsite
+    // for updateWebsite
     app.put('/api/website/:websiteId', function (req, res) {
         var websiteId = req.params.websiteId;
-        var user = req.body;
+        var website = req.body;
+        console.log(website)
         for (let x = 0; x < this.websites.length; x++) {
             if (this.websites[x]._id == websiteId) {
-                this.websites[x] = website;
+                for (let key of Object.keys(this.websites[x])) {
+                    if ((key in website)) {
+                        this.websites[x][key] = website[key];
+                    }
+                }
+                console.log(websites)
                 return res.send(this.websites[x]);
             }
         }
-   });
+    });
 
-   // deleteWebsite
+    // deleteWebsite
     app.delete('/api/website/:websiteId', function (req, res) {
         console.log("Get delete website req");
         var websiteId = req.params.websiteId;
@@ -65,6 +84,6 @@ module.exports = function (app) {
                 return;
             }
         }
-   });
+    });
 
 }

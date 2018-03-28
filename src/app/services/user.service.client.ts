@@ -11,12 +11,6 @@ export class UserService {
     // TODO: find env baseUrl
     baseUrl = environment.baseUrl;
 
-    users = [
-        { _id: "123", username: "alice", password: "alice", firstName: "Alice", lastName: "Wonder" },
-        { _id: "234", username: "bob", password: "bob", firstName: "Bob", lastName: "Marley" },
-        { _id: "345", username: "charly", password: "charly", firstName: "Charly", lastName: "Garcia" }
-    ];
-
     api = {
         'createUser': this.createUser,
         'updateUser': this.updateUser,
@@ -37,7 +31,7 @@ export class UserService {
    }
 
     updateUser(userId, user) {
-        return this._http.put('api/user' + userId, user)
+        return this._http.put('api/user/' + userId, user)
         .map(
             (res: Response) => {
                 const data = res.json();
@@ -47,12 +41,12 @@ export class UserService {
    }
 
     deleteUser(userId) {
-        return this._http.delete('api/user' + userId, userId)
+        return this._http.delete('api/user/' + userId, userId)
     }
 
     findUserById(userId: String) {
         // map the received response in a standard format
-        return this._http.get(this.baseUrl + 'api/user' + userId)
+        return this._http.get(this.baseUrl + 'api/user/' + userId)
         .map(
             (res: Response) => {
                 const data = res.json();

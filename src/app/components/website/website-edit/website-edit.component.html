@@ -12,10 +12,10 @@
     <div class="navbar-brand myNavIconCenter3 visibleIfLandscape text-white">Edit Websites</div>
     <div class="navbar-brand myNavIconCenter visibleIfPortrait text-white">Edit Websites</div>
     <!-- ok goes back to website list -->
-    <a [routerLink]="['/user',userId,'website']" class="navbar-brand myNavIconRight text-white">
-      <span class="glyphicon glyphicon-ok"></span>
-    </a>
-  </div>
+    <div class="navbar-brand myNavIconRight text-white">
+      <span class="glyphicon glyphicon-ok" (click)="update()"></span>
+    </div>
+ </div>
   <div class="grid-container">
     <div class="visibleIfLandscape side">
       <!-- have access to website lists if landscape -->
@@ -29,23 +29,21 @@
       </ul>
     </div>
     <div class="main">
-      <form>
-        <div class="form-group">
-          <!-- edit this specific website -->
-          <label>Website Name</label>
-          <input [(ngModel)]="websitename" name="websitename" id="websitename" type="text" class="form-control" placeholder={{websitename}}>
-        </div>
-        <div class="form-group">
-          <label>Website Description</label>
-          <textarea [(ngModel)]="description" rows="5" name="description" id="description" type="text" class="form-control" placeholder={{description}}></textarea>
-        </div>
+      <form #f="ngForm">
+        <label>Name</label>
+        <input placeholder={{namePh}} name="name" type="text" class="form-control" ngModel required #name="ngModel" />
+        <!-- use local reference to the input field to display a errMsg -->
+        <span class="help-block" *ngIf="!name.valid && name.touched">
+          Please enter name!
+        </span>
+        <label>Description</label>
+        <input placeholder={{descriptionPh}} name="description" type="text" class="form-control" ngModel required #description="ngModel"
+        />
+        <span class="help-block" *ngIf="!description.valid && description.touched">
+          Please enter description!
+        </span>
 
-        <p>
-          <!-- deleting a specific website returns to website list -->
-          <a [routerLink]="['/user',userId,'website']">
-            <button type="button" class="btn btn-block btn-danger">Delete</button>
-          </a>
-        </p>
+        <button type="button" class="btn btn-block btn-danger" (click)="delete()">Delete</button>
       </form>
     </div>
   </div>

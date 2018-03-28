@@ -13,8 +13,7 @@
 
   <ul class="list-group bg-white text-primary">
     <li class="list-group-item">
-      <!-- fix widget id for now -->
-      <a [routerLink]="['/user',userId,'website',websiteId,'page',pageId,'widget/123/header']">Header</a>
+      <a [routerLink]="['/user',userId,'website',websiteId,'page',pageId,'widget',headerId,'header']">Header</a>
     </li>
     <li class="list-group-item">
       <a>Label</a>
@@ -32,10 +31,10 @@
       <a>Button</a>
     </li>
     <li class="list-group-item">
-      <a [routerLink]="['/user',userId,'website',websiteId,'page',pageId,'widget/345/image']" >Image</a>
+      <a [routerLink]="['/user',userId,'website',websiteId,'page',pageId,'widget',imageId,'image']" >Image</a>
     </li>
     <li class="list-group-item">
-      <a [routerLink]="['/user',userId,'website',websiteId,'page',pageId,'widget/678/youtube']" >Youtube</a>
+      <a [routerLink]="['/user',userId,'website',websiteId,'page',pageId,'widget', youtubeId, 'youtube']" >Youtube</a>
     </li>
     <li class="list-group-item">
       <a>Data table</a>

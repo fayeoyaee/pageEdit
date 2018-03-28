@@ -4,16 +4,16 @@
     <a [routerLink]="['/user',userId]" class="navbar-brand myNavIconLeft text-white">
       <span class="glyphicon glyphicon-menu-left"></span>
     </a>
-    <!-- use the page of website 456 for now -->
-    <a [routerLink]="['/user/123/website/456/page']" class="navbar-brand myNavIconCenter text-white">Website</a>
-    <a [routerLink]="['/user/123/website/new']" class="navbar-brand myNavIconRight text-white">
+    <!-- use the page of the first website -->
+    <a [routerLink]="['/user', userId,'website',websites[0]._id,'page']" class="navbar-brand myNavIconCenter text-white">Website</a>
+    <a [routerLink]="['/user',userId,'website','new']" class="navbar-brand myNavIconRight text-white">
       <span class="glyphicon glyphicon-plus"></span>
     </a>
   </div>
   <!-- iterate over collection of websites  -->
   <ul class="list-group bg-white text-primary" *ngFor="let website of websites">
     <li class="list-group-item">
-      <a>{{website.name}}</a>
+      <a [routerLink]="['/user', userId,'website',website._id,'page']" >{{website.name}}</a>
       <a [routerLink]="['/user',userId,'website',website._id]" >
         <span class="glyphicon glyphicon-cog pull-right"></span>
       </a>

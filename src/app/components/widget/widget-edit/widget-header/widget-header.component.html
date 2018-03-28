@@ -6,32 +6,30 @@
     </a>
     <div class="navbar-brand myNavIconCenter text-black">Widget Edit</div>
     <!-- ok goes back to widget list -->
-    <a [routerLink]="['/user',userId,'website',websiteId,'page',pageId,'widget']" class="navbar-brand myNavIconRight text-black">
-      <span class="glyphicon glyphicon-ok"></span>
-    </a>
-  </div>
+    <div class="navbar-brand myNavIconRight text-white">
+      <span class="glyphicon glyphicon-ok" (click)="update()"></span>
+    </div>
+ </div>
 
 
-  <form>
+  <form #f="ngForm">
     <div class="form-group">
       <label>Type</label>
-      <input [(ngModel)]="widgettype" name="widgettype" id="widgettype" type="text" class="form-control" placeholder={{widgettype}}>
+      <input [(ngModel)]="widgettype" name="widgettype" id="widgettype" type="text" class="form-control" placeholder={{typePh}}>
     </div>
     <div class="form-group">
       <label>Text</label>
-      <input [(ngModel)]="widgettext" name="widgettext" id="widgettext" type="text" class="form-control" placeholder={{widgettext}}>
+      <input [(ngModel)]="widgettext" name="widgettext" id="widgettext" type="text" class="form-control" placeholder={{textPh}}>
     </div>
     <div class="form-group">
       <label>Size</label>
-      <input [(ngModel)]="widgetsize" name="widgetsize" id="widgetsize" type="number" class="form-control" placeholder={{widgetsize}}>
+      <input [(ngModel)]="widgetsize" name="widgetsize" id="widgetsize" type="number" class="form-control" placeholder={{sizePh}}>
     </div>
   </form>
-  <p>
     <!-- delete goes back to widget list -->
     <a [routerLink]="['/user',userId,'website',websiteId,'page',pageId,'widget']">
-      <button type="button" class="btn btn-block btn-danger">Delete</button>
+      <button type="button" (click)="delete()" class="btn btn-block btn-danger">Delete</button>
     </a>
-  </p>
   <div class="navbar navbar-fixed-bottom bg-grey text-black">
       <span class="glyphicon glyphicon-user"></span>
   </div>

@@ -29,6 +29,12 @@ export class PageService {
 
     deletePage(pageId) {
         return this._http.delete('api/page/' + pageId)
+         .map(
+                (res: Response) => {
+                    const data = res.json();
+                    return data;
+                }
+            )
    }
 
     findPageById(pageId) {

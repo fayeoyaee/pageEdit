@@ -11,8 +11,20 @@ module.exports = function (app) {
         var websiteId = req.params.websiteId;
         var page = req.body;
 
+        page._id = Math.floor(Math.random() * 1000);
+        var flag = true;
+        while (flag) {
+            for (let a in pages) {
+                if (a._id == page._id) {
+                    flag = true;
+                    break;
+                }
+            }
+            flag = false;
+        }
         page.websiteId = websiteId;
         this.pages.push(page);
+        return res.send(page);
     });
 
     // findAll
@@ -26,8 +38,9 @@ module.exports = function (app) {
             }
         }
         websitePages.splice(0, 1);
+        console.log(websitePages)
         return res.send(websitePages);
-   });
+    });
 
     // findById
     app.get('/api/page/:pageId', function (req, res) {
@@ -38,8 +51,8 @@ module.exports = function (app) {
                 return res.send(this.pages[x]);
             }
         }
- 
-   });
+
+    });
 
     // update
     app.put('/api/page/:pageId', function (req, res) {
@@ -48,10 +61,20 @@ module.exports = function (app) {
 
         for (let x = 0; x < this.pages.length; x++) {
             if (this.pages[x]._id == pageId) {
-                this.pages[x] = page;
+                for (let key of Object.keys(this.pages[x])) {
+                    if ((key in page)) {
+                        for (let key of Object.keys(this.pages[x])) {
+                            if ((key in page)) {
+                                this.pages[x][key] = page[key];
+                            }
+                        }
+                        console.log(pages)
+                        return res.send(this.pages[x]);
+                    }
+                }
             }
         }
-   });
+    });
 
     // delete
     app.delete('/api/page/:pageId', function (req, res) {
@@ -61,9 +84,9 @@ module.exports = function (app) {
         for (let x = 0; x < this.pages.length; x++) {
             if (this.pages[x]._id == pageId) {
                 this.pages.splice(x, 1);
-                return;
+                return res.send({message:"delete widget succeed"});
             }
         }
-   });
+    });
 
 }

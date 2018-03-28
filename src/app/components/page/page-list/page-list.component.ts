@@ -17,7 +17,6 @@ export class PageListComponent implements OnInit {
 
   ngOnInit() {
 
-    // retrieves userId as path parameter
     this.activateRoute.params.subscribe(
       (params: any) => {
         this.userId = params['userId'];
@@ -25,11 +24,11 @@ export class PageListComponent implements OnInit {
       }
     );
 
-    // user UserService to retrieve the user instance
     this.pageService.findPagesByWebsiteId(this.websiteId)
     .subscribe(
       (data: any) => {
         this.pages = data;
+        console.log(this.pages)
       }
     )
   }

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { PageService } from '../../../services/page.service.client';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-page-edit',
@@ -8,14 +9,20 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./page-edit.component.css']
 })
 export class PageEditComponent implements OnInit {
+  @ViewChild('f') updateForm: NgForm;
+
   // properties 
   userId: String;
   websiteId: String;
   pageId: String;
   pagename: String;
   description: String;
+  namePh: String;
+  descriptionPh: String;
+  errorFlag: boolean;
+  errorMsg: String;
 
-  constructor(private pageService: PageService, private activateRoute: ActivatedRoute) { }
+  constructor(private pageService: PageService, private router: Router, private activateRoute: ActivatedRoute) { }
 
   ngOnInit() {
 
@@ -29,9 +36,52 @@ export class PageEditComponent implements OnInit {
     );
 
     // user UserService to retrieve the user instance
-    var page = this.pageService.findPageById(this.pageId);
-    this.pagename = page['name'];
-    this.description = page['description'];
+    this.pageService.findPageById(this.pageId)
+      .subscribe(
+        (data: any) => {
+          var page = data;
+          this.namePh = page['name'];
+          this.descriptionPh = page['description'];
+        }
+      )
   }
 
+  update() {
+    console.log("hi from web edit")
+    var name = this.updateForm.value.name;
+    var description = this.updateForm.value.description;
+    var newPage = { name: name, description: description }
+    for (let key of Object.keys(newPage)) {
+      if (newPage[key] == "") {
+        this.errorFlag = true;
+        this.errorMsg = "page info incomplete"
+        return
+      }
+    }
+
+    this.pageService.updatePage(this.pageId, newPage)
+      .subscribe(
+        (data: any) => {
+          console.log("page update succeed")
+          this.router.navigate(["/user", this.userId, "website", this.websiteId, "page"])
+        },
+        (error: any) => {
+          console.log("page update error")
+        })
+  }
+
+  delete() {
+    console.log("hi from page edit delete")
+
+    this.pageService.deletePage(this.pageId)
+      .subscribe(
+        (data: any) => {
+          console.log("page delete succeed")
+          this.router.navigate(["/user", this.userId, "website", this.websiteId, "page"])
+        },
+        (error: any) => {
+          console.log("page delete error")
+        })
+
+  }
 }

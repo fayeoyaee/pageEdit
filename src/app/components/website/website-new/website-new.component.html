@@ -10,10 +10,11 @@
     </a>
     <div class="navbar-brand myNavIconCenter3 visibleIfLandscape text-white">New Websites</div>
     <div class="navbar-brand myNavIconCenter visibleIfPortrait text-white">New Websites</div>
-    <a [routerLink]="['/user',userId,'website']" class="navbar-brand myNavIconRight text-white">
-      <span class="glyphicon glyphicon-ok"></span>
-    </a>
+    <div class="navbar-brand myNavIconRight text-white">
+      <span class="glyphicon glyphicon-ok" (click)="create()"></span>
+    </div>
   </div>
+
   <div class="grid-container">
     <div class="visibleIfLandscape side">
       <!-- have access to website lists if landscape -->
@@ -26,19 +27,28 @@
         </li>
       </ul>
     </div>
+
     <div class="main">
-      <form>
-        <div class="form-group">
-          <label>Name</label>
-          <input type="text" class="form-control" placeholder="name">
-        </div>
-        <div class="form-group">
-          <label>Description</label>
-          <textarea class="form-control" rows="5" placeholder="Description"></textarea>
-        </div>
+      <div *ngIf="errorFlag" class="alert alert-danger">
+        {{errorMsg}}
+      </div>
+      <form #f="ngForm">
+        <label>Name</label>
+        <input placeholder="name" name="name" type="text" class="form-control" ngModel required #name="ngModel" />
+        <!-- use local reference to the input field to display a errMsg -->
+        <span class="help-block" *ngIf="!name.valid && name.touched">
+          Please enter name!
+        </span>
+        <label>Description</label>
+        <input placeholder="description" name="description" type="text" class="form-control" ngModel required #description="ngModel"
+        />
+        <span class="help-block" *ngIf="!description.valid && description.touched">
+          Please enter description!
+        </span>
       </form>
     </div>
   </div>
+
   <div class="navbar navbar-fixed-bottom bg-primary text-white">
     <!-- delete the router as its not shown on the requirement -->
     <span class="glyphicon glyphicon-user"></span>

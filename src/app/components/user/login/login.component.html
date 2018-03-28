@@ -21,14 +21,9 @@
       Please enter password!
     </span>
   </form>
-  <!-- disable the submit button if the form is not valid by using disable property binding and local form reference -->
-  <!-- TODO: use constant value alice temporarily, should dispatch router from login controller -->
-  <a [routerLink]="['/user/123']">
-    <button type="submit" class="btn btn-block btn-primary" [disabled]="!f.valid">Login</button>
+  <button type="submit" class="btn btn-block btn-primary" (click)="login()" [disabled]="!f.valid">Login</button>
+  <a [routerLink]="['/register']">
+    <button type="button" class="btn btn-block btn-success">Register</button>
   </a>
-  <p>
-    <a [routerLink]="['/register']">
-      <button type="button" class="btn btn-block btn-success">Register</button>
-    </a>
-  </p>
+
 </div>

@@ -14,12 +14,27 @@ module.exports = function (app) {
         var pageId = req.params.pageId;
         var widget = req.body;
 
+        widget._id = Math.floor(Math.random() * 1000);
+        var flag = true;
+        while (flag) {
+            for (let a in widgets) {
+                if (a._id == widget._id) {
+                    flag = true;
+                    break;
+                }
+            }
+            flag = false;
+        }
+
+        console.log(widgets)
         widget.pageId = pageId;
         this.widgets.push(widget);
+        return res.send(widget);
     });
 
     // findAll
     app.get('/api/page/:pageId/widget', function (req, res) {
+        console.log("hi from widget server")
         var pageId = req.params.pageId;
 
         var pageWidgets = [{}];
@@ -29,6 +44,7 @@ module.exports = function (app) {
             }
         }
         pageWidgets.splice(0, 1);
+        console.log(pageWidgets)
         return res.send(pageWidgets);
     });
 
@@ -45,25 +61,32 @@ module.exports = function (app) {
 
     // update
     app.put('/api/widget/:widgetId', function (req, res) {
+        console.log("hi from widget server update")
         var widgetId = req.params.widgetId;
         var widget = req.body;
 
         for (let x = 0; x < this.widgets.length; x++) {
             if (this.widgets[x]._id == widgetId) {
-                this.widgets[x] = widget;
+                for (let key of Object.keys(this.widgets[x])) {
+                    if ((key in widget)) {
+                        this.widgets[x][key] = widget[key];
+                    }
+                }
+                console.log(widgets)
+                return res.send(this.widgets[x]);
             }
         }
     });
 
     // delete
-    app.delete('api/widget/:widgetId', function (req, res) {
+    app.delete('/api/widget/:widgetId', function (req, res) {
         console.log("Get delete widget req");
 
         var widgetId = req.params.widgetId;
         for (let x = 0; x < this.widgets.length; x++) {
             if (this.widgets[x]._id == widgetId) {
                 this.widgets.splice(x, 1);
-                return;
+                return res.send({message:"delete widget succeed"});
             }
         }
 
