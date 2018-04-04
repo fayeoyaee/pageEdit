@@ -1,89 +1,73 @@
-websites = [
-    { _id: "123", name: "Facebook", developerId: "456", description: "Lorem" },
-    { _id: "234", name: "Tweeter", developerId: "456", description: "Lorem" },
-    { _id: "456", name: "Gizmodo", developerId: "123", description: "Lorem" },
-    { _id: "890", name: "Go", developerId: "123", description: "Lorem" },
-    { _id: "567", name: "Tic Tac Toe", developerId: "123", description: "Lorem" },
-    { _id: "678", name: "Checkers", developerId: "123", description: "Lorem" },
-    { _id: "789", name: "Chess", developerId: "234", description: "Lorem" },
-];
+var websiteModel = require('../model/website/website.model.server')
 
-module.exports = function (app) {
-    // for createWebsite
-    app.post('/api/user/:userId/website', function (req, res) {
-        var userId = req.params.userId;
-        var website = req.body;
+module.exports = function(app) {
+  // for createWebsite
+  app.post('/api/user/:userId/website', function(req, res) {
+    var userId = req.params.userId;
+    var website = req.body;
+    websiteModel.createWebsiteForUser(userId, website)
+        .then(
+            function(doc) {
+              console.log('create website for user success')
+              res.send(doc)
+            },
+            function(error) {
+              console.log('create website for user failure')
+              res.status(500).send('website creation failure!')
+            })
+  });
 
-        website._id = Math.floor(Math.random() * 1000);
-        var flag = true;
-        while (flag) {
-            for (let aweb in websites) {
-                if (aweb._id == website._id) {
-                    flag = true;
-                    break;
-                }
-            }
-            flag = false;
-        }
-        website.developerId = userId;
-        this.websites.push(website);
-        console.log("websites")
-        console.log(websites)
-        return res.send(website);
-    });
+  // for findWebsitesByUserId
+  app.get('/api/user/:userId/website', function(req, res) {
+    var userId = req.params.userId;
+    websiteModel.findAllWebsitesForUser(userId).then(
+        function(doc) {
+          console.log('find website for user success')
+          res.send(doc)
+        },
+        function(error) {
+          res.status(500).send('find website for user failure!')
+        })
+  });
 
-    // for findWebsitesByUser
-    app.get('/api/user/:userId/website', function (req, res) {
-        var userId = req.params.userId;
+  // for findWebsiteById
+  app.get('/api/website/:websiteId', function(req, res) {
+    var websiteId = req.params.websiteId;
+    websiteModel.findWebsiteById(websiteId).then(
+        function(doc) {
+          console.log('find website by id success')
+          res.send(doc)
+        },
+        function(error) {
+          res.status(500).send('find website by id failure!')
+        })
+  });
 
-        var userWebsites = [{}];
-        for (let x = 0; x < this.websites.length; x++) {
-            if (this.websites[x].developerId == userId) {
-                userWebsites.push(this.websites[x]);
-            }
-        }
-        userWebsites.splice(0, 1);
-        return res.send(userWebsites);
-    });
+  // for updateWebsite
+  app.put('/api/website/:websiteId', function(req, res) {
+    var websiteId = req.params.websiteId;
+    var website = req.body;
+    websiteModel.updateWebsite(websiteId, website)
+        .then(
+            function(doc) {
+              console.log('update website success')
+              res.send(doc)
+            },
+            function(error) {
+              res.status(500).send('update website failure!')
+            })
+  });
 
-    // for findWebsiteById
-    app.get('/api/website/:websiteId', function (req, res) {
-        var websiteId = req.params.websiteId;
-        for (let x = 0; x < this.websites.length; x++) {
-            if (this.websites[x]._id == websiteId) {
-                return res.send(this.websites[x]);
-            }
-        }
-    });
-
-    // for updateWebsite
-    app.put('/api/website/:websiteId', function (req, res) {
-        var websiteId = req.params.websiteId;
-        var website = req.body;
-        console.log(website)
-        for (let x = 0; x < this.websites.length; x++) {
-            if (this.websites[x]._id == websiteId) {
-                for (let key of Object.keys(this.websites[x])) {
-                    if ((key in website)) {
-                        this.websites[x][key] = website[key];
-                    }
-                }
-                console.log(websites)
-                return res.send(this.websites[x]);
-            }
-        }
-    });
-
-    // deleteWebsite
-    app.delete('/api/website/:websiteId', function (req, res) {
-        console.log("Get delete website req");
-        var websiteId = req.params.websiteId;
-        for (let x = 0; x < this.websites.length; x++) {
-            if (this.websites[x]._id == websiteId) {
-                this.websites.splice(x, 1);
-                return;
-            }
-        }
-    });
-
+  // deleteWebsite
+  app.delete('/api/website/:websiteId', function(req, res) {
+    console.log('Get delete website req');
+    var websiteId = req.params.websiteId;
+    websiteModel.deleteWebsite(websiteId).then(
+        function(doc) {
+          console.log('delete website success')
+        },
+        function(error) {
+          res.status(500).send('update website failure!')
+        })
+  });
 }

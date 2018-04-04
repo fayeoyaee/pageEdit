@@ -13,7 +13,8 @@ var WebsiteSchema = mongoose.Schema({
         type: String,
     },
     pages: {
-        type: [pageSchema],
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'page'
     },
     dateCreated: {
         type: Date,

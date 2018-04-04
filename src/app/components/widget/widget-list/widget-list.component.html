@@ -14,7 +14,7 @@
 
   <div class="col-xs-12" *ngFor="let widget of widgets">
 
-    <div [ngSwitch]="widget.widgetType">
+    <div [ngSwitch]="widget.type">
       <div *ngSwitchCase="'HEADING'">
         <li class="row list-group-item thmnail">
           <div class="icon-header">
@@ -22,10 +22,10 @@
             <h1 [ngStyle]="{'font-size': widget.size}">{{widget.text}}</h1>
           </div>
           <div class="icon-group">
-            <a [routerLink]="['/user',userId,'website',websiteId, 'page',pageId, 'widget',widget._id,'header']">
+            <a [routerLink]="['/user',userId,'website',websiteId, 'page',pageId, 'widget',widget._id,'heading']">
               <span class="glyphicon glyphicon-cog text-primary"></span>
             </a>
-            <span class="glyphicon glyphicon-menu-hamburger"></span>
+            <span class="glyphicon glyphicon-menu-hamburger" (click)="reorder(pageId, widget._id)"></span>
           </div>
         </li>
       </div>
@@ -38,7 +38,7 @@
             <a [routerLink]="['/user',userId,'website',websiteId,'page',pageId,'widget',widget._id,'image']">
               <span class="glyphicon glyphicon-cog text-primary"></span>
             </a>
-            <span class="glyphicon glyphicon-menu-hamburger"></span>
+            <span class="glyphicon glyphicon-menu-hamburger"  (click)="reorder(pageId, widget._id)"></span>
           </div>
         </div>
       </div>
@@ -50,7 +50,7 @@
             <a [routerLink]="['/user',userId,'website',websiteId,'page',pageId,'widget',widget._id,'youtube']">
               <span class="glyphicon glyphicon-cog text-primary"></span>
             </a>
-            <span class="glyphicon glyphicon-menu-hamburger "></span>
+            <span class="glyphicon glyphicon-menu-hamburger " (click)="reorder(pageId, widget._id)"></span>
           </div>
         </div>
       </div>
@@ -63,7 +63,7 @@
           </div>
           <div class="icon-group">
             <span class="glyphicon glyphicon-cog text-primary"></span>
-            <span class="glyphicon glyphicon-menu-hamburger "></span>
+            <span class="glyphicon glyphicon-menu-hamburger " (click)="reorder(pageId, widget._id)"></span>
           </div>
         </li>
       </div>

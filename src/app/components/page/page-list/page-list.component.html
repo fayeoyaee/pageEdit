@@ -4,8 +4,8 @@
       <span class="glyphicon glyphicon-menu-left"></span>
     </a>
     <!-- use page 321 for now -->
-    <a [routerLink]="['/user/123/website/456/page/321/widget']" class="navbar-brand myNavIconCenter text-black">Page</a>
-    <a [routerLink]="['/user/123/website/456/page/new']" class="navbar-brand myNavIconRight text-black">
+    <a [routerLink]="['/user',userId,'website',websiteId,'page',pages[0]._id,'widget']" class="navbar-brand myNavIconCenter text-black">Page</a>
+    <a [routerLink]="['/user',userId,'website',websiteId,'page','new']" class="navbar-brand myNavIconRight text-black">
       <span class="glyphicon glyphicon-plus"></span>
     </a>
   </div>

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { WidgetService } from '../../../services/widget.service.client';
-import { ActivatedRoute } from '@angular/router';
-import { DomSanitizer } from '@angular/platform-browser';
+import {Component, OnInit} from '@angular/core';
+import {DomSanitizer} from '@angular/platform-browser';
+import {ActivatedRoute, Router} from '@angular/router';
+
+import {WidgetService} from '../../../services/widget.service.client';
 
 @Component({
   selector: 'app-widget-chooser',
@@ -9,49 +10,39 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./widget-chooser.component.css']
 })
 export class WidgetChooserComponent implements OnInit {
-  // properties 
+  // properties
   userId: String;
   websiteId: String;
   pageId: String;
-  headerId: String;
-  imageId: String;
   youtubeId: String;
+  types = ['HEADING', 'IMAGE', 'YOUTUBE'];
+  type_urls = ['heading', 'image', 'youtube'];
 
-  constructor(private widgetService: WidgetService, private activateRoute: ActivatedRoute, private sanitizer: DomSanitizer) { }
+  constructor(
+      private widgetService: WidgetService,
+      private activateRoute: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
     // retrieves userId as path parameter
-    this.activateRoute.params.subscribe(
-      (params: any) => {
-        this.userId = params['userId'];
-        this.websiteId = params['websiteId'];
-        this.pageId = params['pageId'];
-      }
-    );
+    this.activateRoute.params.subscribe((params: any) => {
+      this.userId = params['userId'];
+      this.websiteId = params['websiteId'];
+      this.pageId = params['pageId'];
+    })
+  };
 
-    this.widgetService.findWidgetsByPageId(this.pageId)
-      .subscribe(
-        (data: any) => {
-          var widgets = data;
-          console.log(widgets)
-
-        for (let x = 0; x < widgets.length; x++) {
-            var widget = widgets[x];
-            console.log(widget)
-            console.log(widget['widgetType'])
-            if (widget['widgetType'] == "IMAGE") {
-              this.imageId = widget['_id'];
-            }
-            if (widget['widgetType'] == "HEADING") {
-              this.headerId = widget['_id'];
-            }
-            if (widget['widgetType'] == "YOUTUBE") {
-              this.youtubeId = widget['_id'];
-            }
-          }
-          console.log(this.imageId)
-          console.log(this.headerId)
-          console.log(this.youtubeId)
-        })
-  }
+  newWidget(idx) {
+    var newWidget = {type: this.types[idx]};
+    this.widgetService.createWidget(this.pageId, newWidget)
+        .subscribe(
+            (data: any) => {
+              this.router.navigate([
+                '/user', this.userId, 'website', this.websiteId, 'page',
+                this.pageId, 'widget', data._id, this.type_urls[idx]
+              ]);
+            },
+            (error: any) => {
+              console.log('widget create error');
+            })
+  };
 }

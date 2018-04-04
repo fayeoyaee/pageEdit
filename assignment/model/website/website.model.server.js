@@ -1,60 +1,34 @@
-import { UserModel } from '../user/user.model.server';
-
+let UserModel = require('../user/user.model.server');
 let mongoose = require('mongoose')
-let websiteSchema = require('./website.model.server')
+let websiteSchema = require('./website.schema.server')
 var websiteModel = mongoose.model('website', websiteSchema)
 
-const SUCCESS = 0;
-const FAILURE = -1;
+exports.createWebsiteForUser = function(userId, website) {
+  website._user = userId
+  var newWebsite = new websiteModel(website)
+  UserModel.findUserById(userId)
+      .then(function(doc) {
+        doc.websites.push(newWebsite._id)
+        return doc
+      })
+      .then(function(doc) {
+        return UserModel.updateUser(userId, doc)
+      })
+  return newWebsite.save()
+};
 
-exports.createWebsiteForUser = function (userId, website) {
-    // a website document: a instance of websiteModel
-    var user = UserModel.findUserById(userId)
-    // create subdocs by using create method of mongoosearrays
-    // should have generated a webdoc from website
-    user.websites.create(website)
-    // calling save on the parent document triggers save() for all its subdocs
-    // will return SUCCESS or FAILURE
-    return UserModel.updateUser(userId, user)
-}
+exports.findWebsiteById = function(websiteId) {
+  return websiteModel.findOne({_id: websiteId})
+};
 
-exports.findWebsiteById = function (websiteId) {
-    var ret; 
-    websiteMode.find({ _id: websiteId }, function (error, docs) {
-        if (error) {
-            ret = ''
-        } else {
-            ret = docs;
-        }
-    })
-    return ret
-}
+exports.findAllWebsitesForUser = function(userId) {
+  return websiteModel.find({_user: userId})
+};
 
-exports.findAllWebsitesForUser = function (userId) {
-    var user = UserModel.findUserById(userId)
-    return user.websites
-}
+exports.updateWebsite = function(websiteId, website) {
+  return websiteModel.update({_id: websiteId}, website)
+};
 
-exports.updateWebsite = function (websiteId, website) {
-    var ret
-    websiteMode.update({ _id: websiteId }, website, function (error, rawResponse) {
-        if (error) {
-            ret = FAILURE
-        } else {
-            ret = SUCCESS
-        }
-    })
-    return ret
-}
-
-exports.deleteWebsite = function (websiteId) {
-    var ret 
-    websiteMode.remove({ _id: websiteId }, function (error) {
-        if (error) {
-            ret = FAILURE
-        } else {
-            ret = SUCCESS
-        }
-    })
-    return ret
-}
+exports.deleteWebsite = function(websiteId) {
+  return websiteModel.remove({_id: websiteId})
+};

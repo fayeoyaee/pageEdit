@@ -1,95 +1,142 @@
-widgets = [
-    { _id: "123", widgetType: "HEADING", pageId: "321", size: 2, text: "GIZMODO" },
-    { _id: "234", widgetType: "HEADING", pageId: "321", size: 4, text: "Lorem ipsum" },
-    { _id: "345", widgetType: "IMAGE", pageId: "321", width: "100%", url: "http://lorempixel.com/400/200/" },
-    { _id: "456", widgetType: "HTML", pageId: "321", text: "<p>Lorem ipsum</p>" },
-    { _id: "567", widgetType: "HEADING", pageId: "321", size: 4, text: "Lorem ipsum" },
-    { _id: "678", widgetType: "YOUTUBE", pageId: "321", width: "100%", url: "https://www.youtube.com/embed/XPrxhmuzUyo" },
-    { _id: "789", widgetType: "HTML", pageId: "321", text: "<p>Lorem ipsum</p>" },
-];
+var widgetModel = require('../model/widget/widget.model.server')
 
-module.exports = function (app) {
-    // create
-    app.post('/api/page/:pageId/widget', function (req, res) {
-        var pageId = req.params.pageId;
-        var widget = req.body;
+module.exports = function(app) {
+  // create
+  app.post('/api/page/:pageId/widget', function(req, res) {
+    // console.log('widget service server create')
+    var pageId = req.params.pageId;
+    var widget = req.body;
 
-        widget._id = Math.floor(Math.random() * 1000);
-        var flag = true;
-        while (flag) {
-            for (let a in widgets) {
-                if (a._id == widget._id) {
-                    flag = true;
-                    break;
+    widgetModel.createWidget(pageId, widget)
+        .then(
+            function(widget) {
+              //   console.log('widget service server returned widget:')
+              //   console.log(widget)
+              res.send(widget)
+            },
+            function(error) {
+              res.status(500).send({errMsg: 'create widget failure!'})
+            })
+  });
+
+  // findAll
+  app.get('/api/page/:pageId/widget', function(req, res) {
+    // console.log('widget service get find all')
+    var pageId = req.params.pageId;
+
+    widgetModel.findAllWidgetsForPage(pageId).then(
+        function(widgetIds) {
+          if (widgetIds.length === 0) {
+            // console.log('widget service sending find all empty results')
+            res.send([])
+          }
+          widgetArray = [];
+          visited = 0;
+          for (var i = 0; i < widgetIds.length; i++) {
+            (function(i) {
+              widgetModel.findWidgetById(widgetIds[i]).exec(function(err, o) {
+                // console.log(i)
+                // console.log(o)
+                visited++;
+                if (o != null) {
+                  widgetArray[i] = o;
                 }
-            }
-            flag = false;
-        }
-
-        console.log(widgets)
-        widget.pageId = pageId;
-        this.widgets.push(widget);
-        return res.send(widget);
-    });
-
-    // findAll
-    app.get('/api/page/:pageId/widget', function (req, res) {
-        console.log("hi from widget server")
-        var pageId = req.params.pageId;
-
-        var pageWidgets = [{}];
-        for (let x = 0; x < this.widgets.length; x++) {
-            if (this.widgets[x].pageId == pageId) {
-                pageWidgets.push(this.widgets[x]);
-            }
-        }
-        pageWidgets.splice(0, 1);
-        console.log(pageWidgets)
-        return res.send(pageWidgets);
-    });
-
-    // findById
-    app.get('/api/widget/:widgetId', function (req, res) {
-        var widgetId = req.params.widgetId;
-
-        for (let x = 0; x < this.widgets.length; x++) {
-            if (this.widgets[x]._id == widgetId) {
-                return res.send(this.widgets[x]);
-            }
-        }
-    });
-
-    // update
-    app.put('/api/widget/:widgetId', function (req, res) {
-        console.log("hi from widget server update")
-        var widgetId = req.params.widgetId;
-        var widget = req.body;
-
-        for (let x = 0; x < this.widgets.length; x++) {
-            if (this.widgets[x]._id == widgetId) {
-                for (let key of Object.keys(this.widgets[x])) {
-                    if ((key in widget)) {
-                        this.widgets[x][key] = widget[key];
-                    }
+                if (visited === widgetIds.length) {
+                  console.log(
+                      'widget service sending find all results:' +
+                      widgetArray.length);
+                  res.send(widgetArray)
                 }
-                console.log(widgets)
-                return res.send(this.widgets[x]);
-            }
-        }
-    });
+              })
+            })(i)
+          }
+        },
+        function(error) {
+          //   console.log('widget service server find all widgets returned
+          //   error:') console.log(error)
+          res.status(500).send({errMsg: 'find all widgets failure!'})
+        })
+  });
 
-    // delete
-    app.delete('/api/widget/:widgetId', function (req, res) {
-        console.log("Get delete widget req");
+  // findById
+  app.get('/api/widget/:widgetId', function(req, res) {
+    var widgetId = req.params.widgetId;
 
-        var widgetId = req.params.widgetId;
-        for (let x = 0; x < this.widgets.length; x++) {
-            if (this.widgets[x]._id == widgetId) {
-                this.widgets.splice(x, 1);
-                return res.send({message:"delete widget succeed"});
-            }
-        }
+    widgetModel.findWidgetById(widgetId).then(
+        function(widget) {
+          res.send(widget)
+        },
+        function(error) {
+          res.status(500).send({errMsg: 'find widget failure!'})
+        })
+  });
 
-    });
+  // update
+  app.put('/api/widget/:widgetId', function(req, res) {
+    // console.log('widget server get update')
+    var widgetId = req.params.widgetId;
+    var widget = req.body;
 
+    widgetModel.updateWidget(widgetId, widget)
+        .then(
+            function(promise) {
+              //   console.log('widget service sending update results')
+              res.send(promise)
+            },
+            function(error) {
+              res.status(500).send({errMsg: 'update widget failure!'})
+            })
+  });
+
+  // delete
+  app.delete('/api/widget/:widgetId', function(req, res) {
+    // console.log('widget server get delete')
+    var widgetId = req.params.widgetId;
+    widgetModel.deleteWidget(widgetId).then(
+        function(widgetId) {
+          //   console.log('widget service sending delete results')
+          res.send()
+        },
+        function(error) {
+          res.status(500).send()
+        })
+  });
+
+  app.put('/api/page/:pageId/widget/:widgetId', function(req, res) {
+    console.log('widget server get reorder')
+    var pageId = req.params.pageId;
+    var widgetId = req.params.widgetId;
+    widgetModel.reorderWidget(pageId, widgetId)
+        .then(
+            function(widgetIds) {
+            //   console.log('widget service sending reordered ids:' + widgetIds)
+              if (widgetIds.length === 0) {
+                // console.log('widget service sending reorder empty results')
+                res.send([])
+              }
+              widgetArray = [];
+              visited = 0;
+              for (var i = 0; i < widgetIds.length; i++) {
+                (function(i) {
+                  widgetModel.findWidgetById(widgetIds[i])
+                      .exec(function(err, o) {
+                        visited++;
+                        if (o != null) {
+                          widgetArray[i] = o;
+                        }
+                        if (visited === widgetIds.length) {
+                        //   console.log('widget service sending reoder results')
+                        //   console.log(widgetArray)
+                          res.send(widgetArray)
+                        }
+                      })
+                })(i)
+              }
+            },
+            function(error) {
+              console.log('widget service sending reoder results')
+              console.log(error)
+              res.status(500).send({errMsg: 'reorder error!'})
+            })
+  })
 }

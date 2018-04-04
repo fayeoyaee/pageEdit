@@ -14,7 +14,7 @@
   <ul class="list-group bg-white text-primary">
     <!-- should we just list existed widget or all types of widgets -->
     <li class="list-group-item">
-      <a [routerLink]="['/user',userId,'website',websiteId,'page',pageId,'widget',headerId,'header']">Header</a>
+      <a (click)="newWidget(0)">Header</a>
     </li>
     <li class="list-group-item">
       <a>Label</a>
@@ -32,10 +32,10 @@
       <a>Button</a>
     </li>
     <li class="list-group-item">
-      <a [routerLink]="['/user',userId,'website',websiteId,'page',pageId,'widget',imageId,'image']" >Image</a>
+      <a (click)="newWidget(1)" >Image</a>
     </li>
     <li class="list-group-item">
-      <a [routerLink]="['/user',userId,'website',websiteId,'page',pageId,'widget', youtubeId, 'youtube']" >Youtube</a>
+      <a (click)="newWidget(2)" >Youtube</a>
     </li>
     <li class="list-group-item">
       <a>Data table</a>

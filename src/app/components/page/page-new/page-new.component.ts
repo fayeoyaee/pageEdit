@@ -46,11 +46,11 @@ export class PageNewComponent implements OnInit {
     this.pageService.createPage(this.websiteId, newPage)
       .subscribe(
         (data: any) => {
-          console.log("create new website succeed")
+          console.log("create new page succeed")
           this.router.navigate(["/user",this.userId, "website", this.websiteId, "page"])
         },
         (error: any) => {
-          console.log("register website fail")
+          console.log("register page fail")
           this.errorFlag = true;
           this.errorMsg = error;
         });

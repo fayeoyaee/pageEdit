@@ -44,7 +44,7 @@ export class WidgetImageComponent implements OnInit {
       .subscribe(
         (data: any) => {
           var widget = data;
-          this.typePh = widget['widgetType'];
+          this.typePh = widget['type'];
           this.widthPh = widget['width'];
           this.urlPh = widget['url'];
         });
@@ -55,7 +55,7 @@ export class WidgetImageComponent implements OnInit {
     var type = this.updateForm.value.widgettype;
     var url = this.updateForm.value.widgeturl;
     var width = this.updateForm.value.widgetwidth;
-    var newWidget = { widgetType: type, url: url, width: width }
+    var newWidget = { type: type, url: url, width: width }
     for (let key of Object.keys(newWidget)) {
       if (newWidget[key] == "") {
         this.errorFlag = true;
@@ -67,7 +67,7 @@ export class WidgetImageComponent implements OnInit {
     this.widgetService.updateWidget(this.widgetId, newWidget)
       .subscribe(
         (data: any) => {
-          console.log("widget update succeed")
+          // console.log("widget update succeed")
           this.router.navigate(["/user", this.userId, "website", this.websiteId, "page", this.pageId, "widget"])
         },
         (error: any) => {
@@ -81,7 +81,7 @@ export class WidgetImageComponent implements OnInit {
     this.widgetService.deleteWidget(this.widgetId)
       .subscribe(
         (data: any) => {
-          console.log("widget delete succeed")
+          // console.log("widget delete succeed")
           this.router.navigate(["/user", this.userId, "website", this.websiteId, "page", this.pageId, "widget"])
         },
         (error: any) => {
