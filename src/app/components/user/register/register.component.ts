@@ -1,32 +1,29 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { UserService } from '../../../services/user.service.client';
-import { Router } from '@angular/router';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {NgForm} from '@angular/forms';
+import {UserService} from '../../../services/user.service.client';
+import {Router} from '@angular/router';
+import {SharedService} from '../../../services/shared.service';
 
-@Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
-})
+@Component({selector: 'app-register', templateUrl: './register.component.html', styleUrls: ['./register.component.css']})
 
 export class RegisterComponent implements OnInit {
-  // access the form using @ViewChild which allows to access a local reference
-  // the instance of @ViewChild will be of type NgForm
-  @ViewChild('f') registerForm: NgForm;
+  // access the form using @ViewChild which allows to access a local reference the
+  // instance of @ViewChild will be of type NgForm
+  @ViewChild('f')registerForm : NgForm;
 
-  // properties 
-  firstName: String;
-  lastName: String;
-  email: String;
-  username: String;
-  password: String;
-  password2: String;
-  userId: String;
+  // properties
+  firstName : String;
+  lastName : String;
+  email : String;
+  username : String;
+  password : String;
+  password2 : String;
+  userId : String;
   user;
-  errorFlag: boolean;
-  errorMsg: String;
+  errorFlag : boolean;
+  errorMsg : String;
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(private userService : UserService, private router : Router, private sharedService : SharedService) {}
 
   ngOnInit() {
     this.errorMsg = 'Invalid username or password!';
@@ -35,6 +32,7 @@ export class RegisterComponent implements OnInit {
   register() {
     this.username = this.registerForm.value.username;
     this.password = this.registerForm.value.password;
+    console.log("register ts 35: password="+this.password);
     this.password2 = this.registerForm.value.password2;
     if (this.password != this.password2) {
       this.errorFlag = true;
@@ -44,26 +42,36 @@ export class RegisterComponent implements OnInit {
     this.firstName = this.registerForm.value.firstName;
     this.lastName = this.registerForm.value.lastName;
     this.email = this.registerForm.value.email;
-    this.user = { username: this.username, password: this.password, firstName: this.firstName, lastName: this.lastName, email: this.email }
+    this.user = {
+      username: this.username,
+      password: this.password,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      email: this.email
+    }
     for (let key of Object.keys(this.user)) {
       if (this.user[key] == "") {
         this.errorFlag = true;
-        this.errorMsg = "User info incomplete"
-        return
+        this.errorMsg = "User info incomplete";
+        return;
       }
     }
+    this
+      .userService
+      .register(this.user)
+      .subscribe((data : any) => {
+        this
+          .router
+          .navigate(['/user/', data._id]);
+      }, (error : any) => {
+        this.errorFlag = true;
+        this.errorMsg = error._body;
+      })
 
-    this.userService.createUser(this.user)
-      .subscribe(
-        (data: any) => {
-          console.log("register user succeed")
-          this.userId = data._id;
-          this.router.navigate(["/user/" + this.userId])
-        },
-        (error: any) => {
-          console.log("register user fail")
-          this.errorFlag = true;
-          this.errorMsg = error;
-        });
+    // this.userService.createUser(this.user)   .subscribe(     (data: any) => {
+    // console.log("register user succeed")       this.userId = data._id;
+    // this.router.navigate(["/user/" + this.userId])     },     (error: any) => {
+    // console.log("register user fail")       this.errorFlag = true; this.errorMsg
+    // = error;     });
   }
 }
