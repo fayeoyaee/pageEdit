@@ -4,8 +4,8 @@
 // `environment.prod.ts` will be used instead. The list of which env maps to
 // which file can be found in `.angular-cli.json`.
 
-// var port = process.env.PORT;
 export const environment = {
   production: false,
+  // on heroku: should set to null
   baseUrl: ""
 };
