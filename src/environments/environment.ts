@@ -7,5 +7,5 @@
 // var port = process.env.PORT;
 export const environment = {
   production: false,
-  baseUrl: "http://localhost:3002"
+  baseUrl: ""
 };
