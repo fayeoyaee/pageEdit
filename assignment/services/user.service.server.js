@@ -22,19 +22,19 @@ function deserializeUser(user, done) {
 passport.use(new LocalStrategy(localStrategy));
 
 function localStrategy(username, password, done) {
-  // console.log("user service server 25: username", username);
+  console.log("user service server 25: username", username);
   userModel
     .findUserByUsername(username)
     .then(function (user) {
-      // console.log("user service server 29: requested username=" + username + " password=" + password + " found user=");
-      // console.log(user);
+      console.log("user service server 29: requested username=" + username + " password=" + password + " found user=");
+      console.log(user);
       // var hashed = bcrypt.hashSync("a"); console.log("test comparesync: " +
       // bcrypt.compareSync("a", hashed));
       if (user && bcrypt.compareSync(password, user.password)) {
-        // console.log("user service server 32: login verified")
+        console.log("user service server 32: login verified")
         return done(null, user);
       } else {
-        // console.log("user service server 35: login fail")
+        console.log("user service server 35: login fail")
         return done(null, false);
       }
     }, function (error) {
@@ -59,10 +59,10 @@ function logout(req, res) {
 
 function register(req, res) {
   var user = req.body;
-  // console.log("user service server 61(register): before hashed password=" + user.password + " user:");
-  // console.log(user)
+  console.log("user service server 61(register): before hashed password=" + user.password + " user:");
+  console.log(user)
   user.password = bcrypt.hashSync(user.password);
-  // console.log("user service server 63: after hashed password=" + user.password);
+  console.log("user service server 63: after hashed password=" + user.password);
   return userModel
     .createUser(user)
     .then(function (user) {

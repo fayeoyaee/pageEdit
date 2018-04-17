@@ -32,7 +32,7 @@ export class RegisterComponent implements OnInit {
   register() {
     this.username = this.registerForm.value.username;
     this.password = this.registerForm.value.password;
-    console.log("register ts 35: password="+this.password);
+    // console.log("register ts 35: password="+this.password);
     this.password2 = this.registerForm.value.password2;
     if (this.password != this.password2) {
       this.errorFlag = true;
